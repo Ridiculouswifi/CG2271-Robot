@@ -2,12 +2,14 @@
 #define robotBrain
 
 #include "MKL25Z4.h"
+#include "queue.h"
 
 #define BAUD_RATE 9600
 #define UART_TX_PORTE22 22
 #define UART_RX_PORTE23 23
 #define UART2_INT_PRIO 128
-#define LED_PIN 20
+
+#define LED_PIN 20 //
 #define MOCK 0x69
 
 volatile int DATA = 0;
@@ -45,6 +47,9 @@ void initUART2(uint32_t baud_rate) {
 	NVIC_EnableIRQ(UART2_IRQn);
 	
 	UART2->C2 |= UART_C2_TIE_MASK | UART_C2_RIE_MASK;
+	
+	Q_Init(&tx_q); // Initialises the transmit queue
+	Q_Init(&rx_q); // Initialises the receive queue
 }
 
 /* Handles the interrupts */
@@ -53,13 +58,29 @@ void UART2_IRQHandler(void)
 	NVIC_ClearPendingIRQ(UART2_IRQn);
 	
 	// If the transmit flag is raised
-	if(UART2->S1 & UART_S1_TDRE_MASK) {
-		UART2->D = MOCK;
+	if (UART2->S1 & UART_S1_TDRE_MASK) {
+		// Data register to able to accept more characters
+		if (!Q_Empty(&tx_q)) {
+			UART2->D = Q_Dequeue(&tx_q);
+		} else {
+			// Queue is empty, disable transmit (enable else where)
+			UART2->C2 &= ~UART_C2_TIE_MASK;
+		}
 	}
 	
 	// If the receive flag is raised
 	else if(UART2->S1 & UART_S1_RDRF_MASK) {
-		DATA = UART2->D;
+		// Data register has characters
+		if (!Q_Full(&rx_q)) {
+			Q_Enqueue(&rx_q, UART2->D);
+		} else {
+			// Queue is full, wait till queue is empty again
+			
+			/*
+			// Clear Queue
+			Q_Init(&rx_q);
+			*/
+		}
 	}
 }
 

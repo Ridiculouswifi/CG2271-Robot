@@ -16,3 +16,5 @@
 .\objects\main.o: C:\Users\Ting Hui\AppData\Local\Arm\Packs\Keil\Kinetis_KLxx_DFP\1.15.1\Device\Include\MKL25Z4.h
 .\objects\main.o: robotBrain.h
 .\objects\main.o: C:\Users\Ting Hui\AppData\Local\Arm\Packs\Keil\Kinetis_KLxx_DFP\1.15.1\Device\Include\MKL25Z4.h
+.\objects\main.o: queue.h
+.\objects\main.o: C:\Users\Ting Hui\AppData\Local\Arm\Packs\Keil\Kinetis_KLxx_DFP\1.15.1\Device\Include\MKL25Z4.h
