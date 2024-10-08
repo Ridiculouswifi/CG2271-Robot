@@ -6,7 +6,6 @@
 #include "robotAudio.h"
 #include "robotBrain.h"
 
-
 int main(void) {
-	
+
 }
