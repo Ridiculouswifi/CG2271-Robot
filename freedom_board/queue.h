@@ -7,7 +7,7 @@
 
 /* Defines the attributes of a queue */
 typedef struct {
-	unsigned char Data[Q_SIZE];
+	uint8_t Data[Q_SIZE];
 	uint16_t Head; // points to the oldest data element
 	uint16_t Tail; // points to the next free space
 	uint16_t Size; // quantity of elements in queue
@@ -38,7 +38,7 @@ int Q_Full(Q_T* q) {
 }
 
 /* Adds the element d to the queue */
-int Q_Enqueue(Q_T* q, unsigned char d) {
+int Q_Enqueue(Q_T* q, uint8_t d) {
 	if (!Q_Full(q)) {
 		q -> Data[q -> Tail++] = d;
 		q -> Tail %= Q_SIZE;
@@ -50,8 +50,8 @@ int Q_Enqueue(Q_T* q, unsigned char d) {
 }
 
 /* Removes and returns the element at Head */
-unsigned char Q_Dequeue(Q_T* q) {
-	unsigned char t = 0;
+uint8_t Q_Dequeue(Q_T* q) {
+	uint8_t t = 0;
 	if (!Q_Empty(q)) {
 		t = q -> Data[q -> Head];
 		q -> Data[q -> Head++] = 0;

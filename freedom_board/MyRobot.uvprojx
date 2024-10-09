@@ -417,6 +417,11 @@
               <FileType>5</FileType>
               <FilePath>.\queue.h</FilePath>
             </File>
+            <File>
+              <FileName>robotSerial.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\robotSerial.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
