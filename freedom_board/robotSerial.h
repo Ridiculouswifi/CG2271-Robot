@@ -12,9 +12,13 @@
 /*
 #define LED_PIN 20 //
 #define MOCK 0x69
-
-volatile int DATA = 0;
 */
+
+volatile uint8_t DATA;
+
+uint8_t getData() {
+	return DATA;
+}
 
 /* Functions transmit and receive data */
 
@@ -52,6 +56,8 @@ void initUART2(uint32_t baud_rate) {
 	
 	Q_Init(&tx_q); // Initialises the transmit queue
 	Q_Init(&rx_q); // Initialises the receive queue
+	
+	DATA = 0;
 }
 
 /* Handles the interrupts */
@@ -73,17 +79,22 @@ void UART2_IRQHandler(void)
 	// If the receive flag is raised
 	else if(UART2->S1 & UART_S1_RDRF_MASK) {
 		// Data register has characters
+		DATA = UART2->D;
+		/*
 		if (!Q_Full(&rx_q)) {
-			Q_Enqueue(&rx_q, UART2->D);
+			DATA = UART2->D;
+			Q_Enqueue(&rx_q, DATA);
 		} else {
 			// Queue is full, wait till queue is empty again
 			
-			/*
+			
 			// Clear Queue
-			Q_Init(&rx_q);
-			*/
+			// Q_Init(&rx_q);
+			
 		}
+	*/
 	}
+	
 }
 
 

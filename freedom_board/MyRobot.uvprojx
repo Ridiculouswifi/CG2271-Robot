@@ -422,6 +422,11 @@
               <FileType>5</FileType>
               <FilePath>.\robotSerial.h</FilePath>
             </File>
+            <File>
+              <FileName>ledControl.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\ledControl.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

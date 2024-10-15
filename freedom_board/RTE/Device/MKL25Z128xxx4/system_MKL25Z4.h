@@ -110,7 +110,7 @@ extern "C" {
   #define DISABLE_WDOG                 1
 #endif
 
-#define CLOCK_SETUP 1
+// #define CLOCK_SETUP 0
 
 
 /* MCG mode constants */

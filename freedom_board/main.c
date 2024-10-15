@@ -19,20 +19,27 @@
 #include "robotBrain.h"
 #include "robotSerial.h"
 
+#include "ledControl.h"
+
 void interfaceCommand(void *argument) {
 	for(;;) {
-		handleCommand(extractCommand());
+		uint8_t command = DATA;
+		handleCommand(command);
 	}
 }
 
 int main(void) {
 	// Initialise peripherals etc
 	SystemCoreClockUpdate();
+	initLED();
+	initUART2(BAUD_RATE);
 	
 	// Initialise OS
-	osKernelInitialize();
-	osThreadNew(interfaceCommand, NULL, NULL);
-	osKernelStart();
+	//osKernelInitialize();
+	//osThreadNew(interfaceCommand, NULL, NULL);
+	//osKernelStart();
 	
-	for(;;) {}
+	while(1) {
+		handleCommand(getData());
+	}
 }

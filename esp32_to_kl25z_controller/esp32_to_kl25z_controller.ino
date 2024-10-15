@@ -1,5 +1,8 @@
 #include <Bluepad32.h>
 
+#define RXD2 16
+#define TXD2 17
+
 ControllerPtr myControllers[BP32_MAX_GAMEPADS];
 
 // This callback gets called any time a new gamepad is connected.
@@ -42,11 +45,10 @@ void onDisconnectedController(ControllerPtr ctl) {
 }
 
 void dumpGamepad(ControllerPtr ctl) {
-  Serial.printf(
-  "idx=%d, dpad: 0x%02x, buttons: 0x%04x",
-  ctl->index(),        // Controller Index
-  ctl->dpad(),         // D-pad
-  ctl->buttons(),      // bitmask of pressed buttons
+  Serial.printf("idx=%d, dpad: 0x%02x, buttons: 0x%04x",
+    ctl->index(),     // Controller Index
+    ctl->dpad(),      // D-pad
+    ctl->buttons()   // bitmask of pressed buttons
   );
 }
 
@@ -65,13 +67,13 @@ void processGamepad(ControllerPtr ctl) {
   buttons
   y: 0x0004 (corresponds to ctl->x) 
   */
+  // wave
   // up button
   if (ctl->x()) {
     ctl->playDualRumble(0 /* delayedStartMs */, 250 /* durationMs */, 0x80 /* weakMagnitude */,
                         0x40 /* strongMagnitude */);
     // stop all movement (emergency brake)
     sendPacketToKL25Z(0xFF);
-    
   } else {
     uint8_t dpad = ctl->dpad();
     sendPacketToKL25Z(dpad);
@@ -93,13 +95,18 @@ void processControllers() {
 
 void sendPacketToKL25Z(uint8_t command) {
     // Send the command packet via Serial to KL25Z
-    Serial.write(command);
-    Serial.flush();  // Ensure all data is sent
+    Serial2.write(command);
+    Serial.printf("Command Send: 0x%02x", command);
+    Serial.println("");
+    Serial2.flush();  // Ensure all data is sent
+    delay(1000);
 }
 
 // Arduino setup function. Runs in CPU 1
 void setup() {
   Serial.begin(115200);
+  Serial2.begin(9600, SERIAL_8N1, RXD2, TXD2);
+
   Serial.printf("Firmware: %s\n", BP32.firmwareVersion());
   const uint8_t* addr = BP32.localBdAddress();
   Serial.printf("BD Addr: %2X:%2X:%2X:%2X:%2X:%2X\n", addr[0], addr[1], addr[2], addr[3], addr[4], addr[5]);
@@ -120,6 +127,7 @@ void setup() {
   // - Second one, which is a "virtual device", is a mouse.
   // By default, it is disabled.
   BP32.enableVirtualDevice(false);
+
 }
 
 // Arduino loop function. Runs in CPU 1.
