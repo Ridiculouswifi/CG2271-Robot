@@ -9,14 +9,9 @@
 #define UART_RX_PORTE23 23
 #define UART2_INT_PRIO 128
 
-/*
-#define LED_PIN 20 //
-#define MOCK 0x69
-*/
+volatile int DATA;
 
-volatile uint8_t DATA;
-
-uint8_t getData() {
+int getData() {
 	return DATA;
 }
 
@@ -54,8 +49,10 @@ void initUART2(uint32_t baud_rate) {
 	
 	UART2->C2 |= UART_C2_TIE_MASK | UART_C2_RIE_MASK;
 	
+	/* Currently not using queue
 	Q_Init(&tx_q); // Initialises the transmit queue
 	Q_Init(&rx_q); // Initialises the receive queue
+	*/
 	
 	DATA = 0;
 }
@@ -67,6 +64,9 @@ void UART2_IRQHandler(void)
 	
 	// If the transmit flag is raised
 	if (UART2->S1 & UART_S1_TDRE_MASK) {
+		UART2->D = 0x69; // Random Value
+		
+		/* Only used when using queue
 		// Data register to able to accept more characters
 		if (!Q_Empty(&tx_q)) {
 			UART2->D = Q_Dequeue(&tx_q);
@@ -74,25 +74,25 @@ void UART2_IRQHandler(void)
 			// Queue is empty, disable transmit (enable else where)
 			UART2->C2 &= ~UART_C2_TIE_MASK;
 		}
+		*/
 	}
 	
 	// If the receive flag is raised
 	else if(UART2->S1 & UART_S1_RDRF_MASK) {
-		// Data register has characters
 		DATA = UART2->D;
-		/*
+		
+		/* Only used when using queue
+		// Data register has characters
 		if (!Q_Full(&rx_q)) {
 			DATA = UART2->D;
 			Q_Enqueue(&rx_q, DATA);
 		} else {
 			// Queue is full, wait till queue is empty again
 			
-			
 			// Clear Queue
 			// Q_Init(&rx_q);
-			
 		}
-	*/
+		*/
 	}
 	
 }

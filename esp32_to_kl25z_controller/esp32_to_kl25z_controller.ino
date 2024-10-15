@@ -99,7 +99,7 @@ void sendPacketToKL25Z(uint8_t command) {
     Serial.printf("Command Send: 0x%02x", command);
     Serial.println("");
     Serial2.flush();  // Ensure all data is sent
-    delay(1000);
+    delay(10);
 }
 
 // Arduino setup function. Runs in CPU 1

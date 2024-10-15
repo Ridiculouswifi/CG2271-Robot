@@ -17,13 +17,12 @@
 #include "robotMotorControl.h"
 #include "robotAudio.h"
 #include "robotBrain.h"
-#include "robotSerial.h"
 
 #include "ledControl.h"
 
 void interfaceCommand(void *argument) {
 	for(;;) {
-		uint8_t command = DATA;
+		int command = getData();
 		handleCommand(command);
 	}
 }
@@ -31,15 +30,13 @@ void interfaceCommand(void *argument) {
 int main(void) {
 	// Initialise peripherals etc
 	SystemCoreClockUpdate();
-	initLED();
+	initLEDTest();
 	initUART2(BAUD_RATE);
 	
 	// Initialise OS
-	//osKernelInitialize();
-	//osThreadNew(interfaceCommand, NULL, NULL);
-	//osKernelStart();
+	osKernelInitialize();
+	osThreadNew(interfaceCommand, NULL, NULL);
+	osKernelStart();
 	
-	while(1) {
-		handleCommand(getData());
-	}
+	for(;;) {}
 }
