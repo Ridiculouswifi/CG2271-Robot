@@ -427,6 +427,11 @@
               <FileType>5</FileType>
               <FilePath>.\ledControl.h</FilePath>
             </File>
+            <File>
+              <FileName>robotMacros.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\robotMacros.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

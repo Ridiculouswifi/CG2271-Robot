@@ -4,6 +4,7 @@
 #include "MKL25Z4.h"
 #include "queue.h"
 #include "robotSerial.h"
+#include "robotMotorControl.h"
 
 #include "ledControl.h"
 
@@ -23,11 +24,13 @@ void handleCommand(int command) {
 		// Move Front
 		ledControl(GREEN);
 		offLED();
+		motorControl(STRAIGHT, 50); // Hard Coded for forward movement
 		
 	} else if (command == 0x02) {
 		// Move Back
 		ledControl(YELLOW);
 		offLED();
+		motorControl(STRAIGHT, 25);
 		
 	} else if (command == 0x08) {
 		// Turn Left on the spot

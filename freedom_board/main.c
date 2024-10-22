@@ -32,6 +32,8 @@ int main(void) {
 	SystemCoreClockUpdate();
 	initLEDTest();
 	initUART2(BAUD_RATE);
+	initMotor();
+	initPWM();
 	
 	// Initialise OS
 	osKernelInitialize();
