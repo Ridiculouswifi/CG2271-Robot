@@ -2,6 +2,7 @@
 #define robotLED
 
 #include "MKL25Z4.h"
+#include "delayFunction.h"
 
 #define LED1_PIN 1   // PTA1
 #define LED2_PIN 2   // PTA2
@@ -62,6 +63,7 @@ void turnOnForwardLED(int ledNumber) {
         case 8: GPIOC->PSOR = (1 << LED8_PIN); break;
         case 9: GPIOA->PSOR = (1 << LED9_PIN); break;
         case 10: GPIOD->PSOR = (1 << LED10_PIN); break;
+			default: break;
     }
 }
 
@@ -77,6 +79,7 @@ void turnOffForwardLED(int ledNumber) {
         case 8: GPIOC->PCOR = (1 << LED8_PIN); break;
         case 9: GPIOA->PCOR = (1 << LED9_PIN); break;
         case 10: GPIOD->PCOR = (1 << LED10_PIN); break;
+			default: break;
     }
 }
 
@@ -86,15 +89,12 @@ void turnOffAllLEDs() {
     }
 }
 
-void simpleDelay(volatile int count) {
-    for (volatile int i = 0; i < count; i++) {
-    }
-}
-
-void runFrontLEDs() {
+void runFrontLEDs(void *argument) {
     for (int i = 1; i <= 10; i++) {
         turnOnForwardLED(i);  
-        simpleDelay(100000);   
+        delay(100000);   
         turnOffForwardLED(i);  
     }
 }
+
+#endif
