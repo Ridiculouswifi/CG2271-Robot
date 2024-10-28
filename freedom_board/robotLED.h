@@ -2,44 +2,99 @@
 #define robotLED
 
 #include "MKL25Z4.h"
+#include "delayFunction.h"
 
-void initLED(void) {
-    // Enable clock for both Port B and Port D
-    SIM->SCGC5 |= SIM_SCGC5_PORTB_MASK;  // Port B for Red and Green LEDs
-    SIM->SCGC5 |= SIM_SCGC5_PORTD_MASK;  // Port D for Blue LED
+#define LED1_PIN 1   // PTA1
+#define LED2_PIN 2   // PTA2
+#define LED3_PIN 4   // PTD4
+#define LED4_PIN 12  // PTA12
+#define LED5_PIN 4   // PTA4
+#define LED6_PIN 5   // PTA5
+#define LED7_PIN 8   // PTC8
+#define LED8_PIN 9   // PTC9
+#define LED9_PIN 13  // PTA13
+#define LED10_PIN 5  // PTD5
 
-    // Configure the pins as GPIO (Pin Control Register)
-    PORTB->PCR[18] = PORT_PCR_MUX(1); // PTB18 as GPIO (Red LED)
-    PORTB->PCR[19] = PORT_PCR_MUX(1); // PTB19 as GPIO (Green LED)
-    PORTD->PCR[1] = PORT_PCR_MUX(1);  // PTD1 as GPIO (Blue LED)
+void initForwardLEDs(void) {
+    // Enable clocks for Port A, Port C, and Port D
+    SIM->SCGC5 |= SIM_SCGC5_PORTA_MASK | SIM_SCGC5_PORTC_MASK | SIM_SCGC5_PORTD_MASK;
 
-    // Set the pins as output
-    GPIOB->PDDR |= (1 << 18) | (1 << 19);  // Set PTB18, PTB19 as outputs (Red, Green)
-    GPIOD->PDDR |= (1 << 1);               // Set PTD1 as output (Blue)
+    // Configure each pin as GPIO and set as output based on port
+    PORTA->PCR[LED1_PIN] = PORT_PCR_MUX(1);  // LED1: PTA1
+    GPIOA->PDDR |= (1 << LED1_PIN);
+
+    PORTA->PCR[LED2_PIN] = PORT_PCR_MUX(1);  // LED2: PTA2
+    GPIOA->PDDR |= (1 << LED2_PIN);
+
+    PORTD->PCR[LED3_PIN] = PORT_PCR_MUX(1);  // LED3: PTD4
+    GPIOD->PDDR |= (1 << LED3_PIN);
+
+    PORTA->PCR[LED4_PIN] = PORT_PCR_MUX(1);  // LED4: PTA12
+    GPIOA->PDDR |= (1 << LED4_PIN);
+
+    PORTA->PCR[LED5_PIN] = PORT_PCR_MUX(1);  // LED5: PTA4
+    GPIOA->PDDR |= (1 << LED5_PIN);
+
+    PORTA->PCR[LED6_PIN] = PORT_PCR_MUX(1);  // LED6: PTA5
+    GPIOA->PDDR |= (1 << LED6_PIN);
+
+    PORTC->PCR[LED7_PIN] = PORT_PCR_MUX(1);  // LED7: PTC8
+    GPIOC->PDDR |= (1 << LED7_PIN);
+
+    PORTC->PCR[LED8_PIN] = PORT_PCR_MUX(1);  // LED8: PTC9
+    GPIOC->PDDR |= (1 << LED8_PIN);
+
+    PORTA->PCR[LED9_PIN] = PORT_PCR_MUX(1);  // LED9: PTA13
+    GPIOA->PDDR |= (1 << LED9_PIN);
+
+    PORTD->PCR[LED10_PIN] = PORT_PCR_MUX(1);  // LED10: PTD5
+    GPIOD->PDDR |= (1 << LED10_PIN);
 }
 
-// Usage: setLedColor(1, 0, 0) sets only red LED on. setLedColor(1, 0, 1) sets both red and blue led on
-void setLEDColor(uint8_t red, uint8_t green, uint8_t blue) {
-    if (red) {
-        GPIOB->PCOR = (1 << 18);  // Turn on Red LED (active low)
-    } else {
-        GPIOB->PSOR = (1 << 18);  // Turn off Red LED
-    }
-    
-    // Control Green LED
-    if (green) {
-        GPIOB->PCOR = (1 << 19);  // Turn on Green LED (active low)
-    } else {
-        GPIOB->PSOR = (1 << 19);  // Turn off Green LED
-    }
-
-    // Control Blue LED
-    if (blue) {
-        GPIOD->PCOR = (1 << 1);  // Turn on Blue LED (active low)
-    } else {
-        GPIOD->PSOR = (1 << 1);  // Turn off Blue LED
+void turnOnForwardLED(int ledNumber) {
+    switch (ledNumber) {
+        case 1: GPIOA->PSOR = (1 << LED1_PIN); break;
+        case 2: GPIOA->PSOR = (1 << LED2_PIN); break;
+        case 3: GPIOD->PSOR = (1 << LED3_PIN); break;
+        case 4: GPIOA->PSOR = (1 << LED4_PIN); break;
+        case 5: GPIOA->PSOR = (1 << LED5_PIN); break;
+        case 6: GPIOA->PSOR = (1 << LED6_PIN); break;
+        case 7: GPIOC->PSOR = (1 << LED7_PIN); break;
+        case 8: GPIOC->PSOR = (1 << LED8_PIN); break;
+        case 9: GPIOA->PSOR = (1 << LED9_PIN); break;
+        case 10: GPIOD->PSOR = (1 << LED10_PIN); break;
+			default: break;
     }
 }
 
+void turnOffForwardLED(int ledNumber) {
+    switch (ledNumber) {
+        case 1: GPIOA->PCOR = (1 << LED1_PIN); break;
+        case 2: GPIOA->PCOR = (1 << LED2_PIN); break;
+        case 3: GPIOD->PCOR = (1 << LED3_PIN); break;
+        case 4: GPIOA->PCOR = (1 << LED4_PIN); break;
+        case 5: GPIOA->PCOR = (1 << LED5_PIN); break;
+        case 6: GPIOA->PCOR = (1 << LED6_PIN); break;
+        case 7: GPIOC->PCOR = (1 << LED7_PIN); break;
+        case 8: GPIOC->PCOR = (1 << LED8_PIN); break;
+        case 9: GPIOA->PCOR = (1 << LED9_PIN); break;
+        case 10: GPIOD->PCOR = (1 << LED10_PIN); break;
+			default: break;
+    }
+}
+
+void turnOffAllLEDs() {
+    for (int i = 1; i <= 10; i++) {
+        turnOffForwardLED(i);
+    }
+}
+
+void runFrontLEDs(void *argument) {
+    for (int i = 1; i <= 10; i++) {
+        turnOnForwardLED(i);  
+        delay(100000);   
+        turnOffForwardLED(i);  
+    }
+}
 
 #endif

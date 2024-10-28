@@ -34,11 +34,15 @@ int main(void) {
 	initUART2(BAUD_RATE);
 	initMotor();
 	initPWM();
+	initForwardLEDs();
 	
 	// Initialise OS
 	osKernelInitialize();
 	osThreadNew(interfaceCommand, NULL, NULL);
+	osThreadNew(runFrontLEDs, NULL, NULL);
 	osKernelStart();
 	
-	for(;;) {}
+	for(;;) {
+		
+	}
 }
