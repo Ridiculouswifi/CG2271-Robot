@@ -35,12 +35,12 @@ void handleCommand(int command) {
 	} else if (command == 0x08) {
 		// Turn Left on the spot
 		ledControl(PURPLE);
-		motorControl(TURN_ANTICLOCKWISE, 50);
+		motorControl(TURN_ANTICLOCKWISE, 90);
 		
 	} else if (command == 0x04) {
 		// Turn Right on the spot
 		ledControl(PURPLE);
-		motorControl(TURN_CLOCKWISE, 90);
+		motorControl(1, 90);
 		
 	} else if (command == 0x09) {
 		// Move Front and Turn Left

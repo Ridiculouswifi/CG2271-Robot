@@ -71,23 +71,23 @@ void motorControl(int state, int speed) {
     switch (state) {
         case STRAIGHT:
             TPM1_C0V = dutyCycle; // Motor 1
-            TPM1_C1V = dutyCycle; // Motor 2
+            TPM1_C1V = 4998; // Motor 2
             PTB->PSOR |= (1 << 2); // PTB2 (AIN2) HIGH
-            PTB->PCOR |= (1 << 3); // PTB3 (BIN2) LOW
+            PTB->PCOR |= (1 << 3); // PTB3 (BIN2) HIGH
             break;
 
         case TURN_CLOCKWISE:
             TPM1_C0V = dutyCycle; // Motor 1
             TPM1_C1V = dutyCycle; // Motor 2
-            PTB->PSOR |= (1 << 3); // PTB3 (BIN2) HIGH
-            PTB->PSOR |= (1 << 2); // PTB2 (AIN2) HIGH
+            PTB->PSOR |= (1 << 3) | (1 << 2); // PTB3 (BIN2) HIGH
+            //PTB->PSOR |= (1 << 2); // PTB2 (AIN2) HIGH
             break;
 
         case REVERSE:
             TPM1_C0V = dutyCycle; // Motor 1
             TPM1_C1V = dutyCycle; // Motor 2
             PTB->PSOR |= (1 << 3); // PTB3 (BIN2) HIGH
-            PTB->PCOR |= (1 << 2); // PTB2 (AIN2) LOW
+            PTB->PDOR &= ~(1 << 2); // PTB2 (AIN2) LOW
             break;
 
         case TURN_ANTICLOCKWISE:

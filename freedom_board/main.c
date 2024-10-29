@@ -35,10 +35,11 @@ int main(void) {
 	initMotor();
 	initPWM();
 	initForwardLEDs();
+	motorControl(STRAIGHT, 70);
 	
 	// Initialise OS
 	osKernelInitialize();
-	osThreadNew(interfaceCommand, NULL, NULL);
+	//osThreadNew(interfaceCommand, NULL, NULL);
 	osThreadNew(runFrontLEDs, NULL, NULL);
 	osKernelStart();
 	
