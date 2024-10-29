@@ -22,7 +22,16 @@
 void initMotor() {
     // Enable clock for TPM1
     SIM->SCGC6 |= SIM_SCGC6_TPM1_MASK;
+	  SIM->SCGC5 |= SIM_SCGC5_PORTB_MASK;
 
+	  PORTB->PCR[0] &= ~PORT_PCR_MUX_MASK;
+    PORTB->PCR[0] = PORT_PCR_MUX(3); // Set PTB0 to TPM0_CH0
+	
+	  PORTB->PCR[1] &= ~PORT_PCR_MUX_MASK;
+    PORTB->PCR[1] = PORT_PCR_MUX(3); // Set PTB1 to TPM0_CH1
+	
+	
+	
     // Set TPM clock source
     SIM->SOPT2 &= ~SIM_SOPT2_TPMSRC_MASK;
     SIM->SOPT2 |= SIM_SOPT2_TPMSRC(1); // Use MCGFLLCLK or MCGPLLCLK
@@ -31,21 +40,19 @@ void initMotor() {
     TPM1->MOD = 4999; // Assuming 48MHz clock
 
     TPM1->SC &= ~((TPM_SC_CMOD_MASK) | (TPM_SC_PS_MASK));
-    TPM1->SC |= (TPM_SC_CMOD(1) | TPM_SC_PS(2));
+    TPM1->SC |= (TPM_SC_CMOD(1) | TPM_SC_PS(7));
     TPM1->SC &= ~(TPM_SC_CPWMS_MASK);
 
-    SIM->SCGC5 |= SIM_SCGC5_PORTB_MASK;
+    
 
     // Configure PTB0 (Channel 0) for PWM
-    PORTB->PCR[0] &= ~PORT_PCR_MUX_MASK;
-    PORTB->PCR[0] = PORT_PCR_MUX(3); // Set PTB0 to TPM0_CH0
+
     TPM1_C0SC &= ~((TPM_CnSC_ELSB_MASK) | (TPM_CnSC_ELSA_MASK) | (TPM_CnSC_MSB_MASK) | (TPM_CnSC_MSA_MASK));
     TPM1_C0SC |= (TPM_CnSC_ELSB(1) | TPM_CnSC_MSB(1));
     TPM1_C0V = 1;
     
     // Configure PTB1 (Channel 1) for PWM
-    PORTB->PCR[1] &= ~PORT_PCR_MUX_MASK;
-    PORTB->PCR[1] = PORT_PCR_MUX(3); // Set PTB1 to TPM0_CH1
+
     TPM1_C1SC &= ~((TPM_CnSC_ELSB_MASK) | (TPM_CnSC_ELSA_MASK) | (TPM_CnSC_MSB_MASK) | (TPM_CnSC_MSA_MASK));
     TPM1_C1SC |= (TPM_CnSC_ELSB(1) | TPM_CnSC_MSB(1));
     TPM1_C1V = 1;
