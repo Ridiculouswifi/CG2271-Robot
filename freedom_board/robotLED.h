@@ -15,7 +15,7 @@
 #define LED8_PIN 9   // PTC9
 #define LED9_PIN 13  // PTA13
 #define LED10_PIN 5  // PTD5
-#define REAR_LED_PIN 30  // PTE30
+#define REAR_LED_PIN 0  // PTE30
 
 void initFrontLEDs(void) {
     // Enable clocks for Port A, Port C, and Port D
@@ -64,22 +64,22 @@ void initFrontLEDs(void) {
 }
 
 void initRearLEDs(void) {
-    SIM->SCGC5 |= SIM_SCGC5_PORTE_MASK
+		SIM->SCGC5 |= SIM_SCGC5_PORTD_MASK;
 
-    PORTA->PCR[REAR_LED_PIN] &= ~PORT_PCR_MUX_MASK;
-		PORTA->PCR[REAR_LED_PIN] |= PORT_PCR_MUX(1);  // REAR_LED: PTE30
-    GPIOE->PDDR |= (1 << REAR_LED_PIN);
+    PORTD->PCR[REAR_LED_PIN] &= ~PORT_PCR_MUX_MASK;
+    PORTD->PCR[REAR_LED_PIN] = PORT_PCR_MUX(1);
+    GPIOD->PDDR |= (1 << REAR_LED_PIN);
 }
 
 void turnOnRearLED() {
-    GPIOE->PSOR |= (1 << REAR_LED_PIN); 
+    GPIOD->PSOR |= (1 << REAR_LED_PIN); 
 }
 
 void turnOffRearLED() {
-    GPIOE->PCOR |= (1 << REAR_LED_PIN);
+    GPIOD->PCOR |= (1 << REAR_LED_PIN);
 }
 
-void turnOnForwardLED(int ledNumber) {
+void turnOnFrontLED(int ledNumber) {
     switch (ledNumber) {
         case 1: GPIOA->PSOR |= (1 << LED1_PIN); break;
         case 2: GPIOA->PSOR |= (1 << LED2_PIN); break;
@@ -95,7 +95,7 @@ void turnOnForwardLED(int ledNumber) {
     }
 }
 
-void turnOffForwardLED(int ledNumber) {
+void turnOffFrontLED(int ledNumber) {
     switch (ledNumber) {
         case 1: GPIOA->PCOR |= (1 << LED1_PIN); break;
         case 2: GPIOA->PCOR |= (1 << LED2_PIN); break;
@@ -113,23 +113,31 @@ void turnOffForwardLED(int ledNumber) {
 
 void turnOffAllFrontLEDs() {
     for (int i = 1; i <= 10; i++) {
-        turnOffForwardLED(i);
+        turnOffFrontLED(i);
     }
 }
 
 void turnOnAllFrontLEDs() {
 		for (int i = 1; i <= 10; i++) {
-        turnOnForwardLED(i);
+        turnOnFrontLED(i);
     }
 }
 
 void runFrontLEDs(void *argument) {
 		for (;;) {
 			for (int i = 1; i <= 10; i++) {
-					turnOnForwardLED(i);  
+					turnOnFrontLED(i);  
 					osDelay(300);
-					turnOffForwardLED(i);  
+					turnOffFrontLED(i);  
 			}
+		}
+}
+
+void flashRearLEDs(void *argument) {
+    for (;;) {
+			turnOnRearLED;
+      osDelay(300);
+      turnOffRearLED;
 		}
 }
 
