@@ -34,7 +34,7 @@ int main(void) {
 	initUART2(BAUD_RATE);
 	initMotor();
 	initPWM();
-	initForwardLEDs();
+	initFrontLEDs();
 	motorControl(STRAIGHT, 70);
 	
 	// Initialise OS
