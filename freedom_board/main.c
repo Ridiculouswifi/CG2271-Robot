@@ -42,6 +42,7 @@ int main(void) {
 	osKernelInitialize();
 	//osThreadNew(interfaceCommand, NULL, NULL);
 	osThreadNew(runFrontLEDs, NULL, NULL);
+	osThreadNew(flashRearLEDs, NULL, NULL);
 	osKernelStart();
 	
 	for(;;) {
