@@ -35,7 +35,7 @@ int main(void) {
 	initMotor();
 	initPWM();
 	initForwardLEDs();
-	motorControl(STRAIGHT, 70);
+	motorControl(0, 70);
 	
 	// Initialise OS
 	osKernelInitialize();
