@@ -15,8 +15,9 @@
 #define LED8_PIN 9   // PTC9
 #define LED9_PIN 13  // PTA13
 #define LED10_PIN 5  // PTD5
+#define REAR_LED_PIN 30  // PTE30
 
-void initForwardLEDs(void) {
+void initFrontLEDs(void) {
     // Enable clocks for Port A, Port C, and Port D
     SIM->SCGC5 |= SIM_SCGC5_PORTA_MASK | SIM_SCGC5_PORTC_MASK | SIM_SCGC5_PORTD_MASK;
 
@@ -62,6 +63,22 @@ void initForwardLEDs(void) {
     GPIOD->PDDR |= (1 << LED10_PIN);
 }
 
+void initRearLEDs(void) {
+    SIM->SCGC5 |= SIM_SCGC5_PORTE_MASK
+
+    PORTA->PCR[REAR_LED_PIN] &= ~PORT_PCR_MUX_MASK;
+		PORTA->PCR[REAR_LED_PIN] |= PORT_PCR_MUX(1);  // REAR_LED: PTE30
+    GPIOE->PDDR |= (1 << REAR_LED_PIN);
+}
+
+void turnOnRearLED() {
+    GPIOE->PSOR |= (1 << REAR_LED_PIN); 
+}
+
+void turnOffRearLED() {
+    GPIOE->PCOR |= (1 << REAR_LED_PIN);
+}
+
 void turnOnForwardLED(int ledNumber) {
     switch (ledNumber) {
         case 1: GPIOA->PSOR |= (1 << LED1_PIN); break;
@@ -94,17 +111,18 @@ void turnOffForwardLED(int ledNumber) {
     }
 }
 
-void turnOffAllLEDs() {
+void turnOffAllFrontLEDs() {
     for (int i = 1; i <= 10; i++) {
         turnOffForwardLED(i);
     }
 }
 
-void turnOnAllLEDs() {
+void turnOnAllFrontLEDs() {
 		for (int i = 1; i <= 10; i++) {
         turnOnForwardLED(i);
     }
 }
+
 void runFrontLEDs(void *argument) {
 		for (;;) {
 			for (int i = 1; i <= 10; i++) {
