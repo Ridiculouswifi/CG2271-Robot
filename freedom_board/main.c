@@ -22,6 +22,7 @@
 
 void interfaceCommand(void *argument) {
 	for(;;) {
+		//motorControl(STRAIGHT, 70);
 		int command = getData();
 		handleCommand(command);
 	}
@@ -30,22 +31,20 @@ void interfaceCommand(void *argument) {
 int main(void) {
 	// Initialise peripherals etc
 	SystemCoreClockUpdate();
-	initLEDTest();
+	//initLEDTest();
 	initUART2(BAUD_RATE);
 	initMotor();
-	initPWM();
-	initFrontLEDs();
-	initRearLEDs();
-	motorControl(STRAIGHT, 70);
+	//initPWM();
+	//initFrontLEDs();
+	//initRearLEDs();
 	
 	// Initialise OS
 	osKernelInitialize();
-	//osThreadNew(interfaceCommand, NULL, NULL);
-	osThreadNew(runFrontLEDs, NULL, NULL);
-	osThreadNew(flashRearLEDs, NULL, NULL);
+	osThreadNew(interfaceCommand, NULL, NULL);
+	//osThreadNew(runFrontLEDs, NULL, NULL);
+	//osThreadNew(flashRearLEDs, NULL, NULL);
 	osKernelStart();
 	
 	for(;;) {
-		
 	}
 }

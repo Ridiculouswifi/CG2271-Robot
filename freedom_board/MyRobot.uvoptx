@@ -149,8 +149,20 @@
         </SetRegEntry>
       </TargetDriverDllRegistry>
       <Breakpoint/>
+<<<<<<< HEAD
       <ScvdPack>
         <Filename>C:\Users\KH Tan\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\RTOS2\RTX\RTX5.scvd</Filename>
+=======
+      <WatchWindow1>
+        <Ww>
+          <count>0</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>SystemCoreClock,0x0A</ItemText>
+        </Ww>
+      </WatchWindow1>
+      <ScvdPack>
+        <Filename>C:\Users\ych2k\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\RTOS2\RTX\RTX5.scvd</Filename>
+>>>>>>> master
         <Type>ARM.CMSIS.5.6.0</Type>
         <SubType>1</SubType>
       </ScvdPack>

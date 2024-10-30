@@ -136,9 +136,14 @@ void runFrontLEDs(void *argument) {
 void flashRearLEDs(void *argument) {
     for (;;) {
 			turnOnRearLED();
+<<<<<<< HEAD
       osDelay(250);
       turnOffRearLED();
 			osDelay(250);
+=======
+      osDelay(300);
+      turnOffRearLED();
+>>>>>>> master
 		}
 }
 
