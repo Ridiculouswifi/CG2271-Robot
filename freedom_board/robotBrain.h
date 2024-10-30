@@ -20,6 +20,7 @@ uint8_t extractCommand(void) {
 
 /* Executes the action in the packet */
 void handleCommand(int command) {
+	
 	if (command == 0x01) {
 		// Move Front
 		ledControl(GREEN);
@@ -50,12 +51,12 @@ void handleCommand(int command) {
 	} else if (command == 0x05) {
 		// Move Front and Turn Right
 		ledControl(SKY);
-		motorControl(FORWARD_RIGHT_TURN, 50);
+		motorControl(FORWARD_RIGHT_TURN, 90);
 		
 	} else if (command == 0x0a) {
 		// Move Back and Turn Left
 		ledControl(SKY);
-		motorControl(BACKWARDS_LEFT_TURN, 50);
+		motorControl(BACKWARDS_LEFT_TURN, 90);
 		
 	} else if (command == 0x06) {
 		// Move Back and Turn Right
@@ -74,6 +75,7 @@ void handleCommand(int command) {
 		onLED();
 		motorControl(10, 0);
 	}
+	
 }
 
 #endif
