@@ -14,7 +14,7 @@
 #define EXTERNAL_LED 20
 
 enum colour_t {
-	RED, GREEN, BLUE, YELLOW, PURPLE, SKY, OFF
+	RED, GREEN, BLUE, YELLOW, PURPLE, SKY, WHITE, OFF
 };
 
 /*
@@ -103,6 +103,11 @@ void ledControl(enum colour_t colour) {
 	else if (colour == SKY) {
 		offRed();
 		
+		onGreen();
+		onBlue();
+	}
+	else if (colour == WHITE) {
+		onRed();
 		onGreen();
 		onBlue();
 	}

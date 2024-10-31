@@ -39,7 +39,7 @@ void handleCommand(int command) {
 		osThreadFlagsSet(rearRun, MOVING);
 		osThreadFlagsClear(STATIONARY);
 		
-		ledControl(YELLOW);
+		ledControl(WHITE);
 		offLED();
 		motorControl(REVERSE, 50);
 		
@@ -49,7 +49,7 @@ void handleCommand(int command) {
 		osThreadFlagsSet(rearRun, MOVING);
 		osThreadFlagsClear(STATIONARY);
 		
-		ledControl(PURPLE);
+		ledControl(BLUE);
 		motorControl(TURN_ANTICLOCKWISE, 90);
 		
 	} else if (command == 0x04) {
@@ -58,7 +58,7 @@ void handleCommand(int command) {
 		osThreadFlagsSet(rearRun, MOVING);
 		osThreadFlagsClear(STATIONARY);
 		
-		ledControl(PURPLE);
+		ledControl(BLUE);
 		motorControl(TURN_CLOCKWISE, 90);
 		
 	} else if (command == 0x09) {
@@ -107,13 +107,33 @@ void handleCommand(int command) {
 		onLED();
 		motorControl(STOP, 0);
 		
+	} else if (command == 0x0F) {
+		// No Processed Data, Stop
+		osThreadFlagsSet(frontStop, STATIONARY);
+		osThreadFlagsSet(rearStop, STATIONARY);
+		osThreadFlagsClear(MOVING);
+		
+		ledControl(PURPLE);
+		onLED();
+		motorControl(STOP, 0);
+	
+	} else if (command == 0xAA) {
+		// Controller Issues
+		osThreadFlagsSet(frontStop, STATIONARY);
+		osThreadFlagsSet(rearStop, STATIONARY);
+		osThreadFlagsClear(MOVING);
+		
+		ledControl(OFF);
+		onLED();
+		motorControl(STOP, 0);
+	
 	} else {
 		// Command is not recognised, discard command
 		osThreadFlagsSet(frontStop, STATIONARY);
 		osThreadFlagsSet(rearStop, STATIONARY);
 		osThreadFlagsClear(MOVING);
 		
-		ledControl(BLUE);
+		ledControl(YELLOW);
 		onLED();
 		motorControl(STOP, 0);
 	}
