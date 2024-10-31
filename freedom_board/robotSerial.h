@@ -54,7 +54,7 @@ void initUART2(uint32_t baud_rate) {
 	Q_Init(&rx_q); // Initialises the receive queue
 	*/
 	
-	DATA = 0;
+	DATA = 0x09;
 }
 
 /* Handles the interrupts */
