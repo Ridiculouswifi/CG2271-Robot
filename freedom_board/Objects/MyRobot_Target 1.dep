@@ -18,7 +18,7 @@ I (robotMotorControl.h)(0x6723BB90)
 I (robotAudio.h)(0x6720B3B0)
 I (robotBrain.h)(0x6723CA12)
 I (queue.h)(0x6720B3B0)
-I (robotSerial.h)(0x6723BF19)
+I (robotSerial.h)(0x6723D31F)
 I (ledControl.h)(0x6723C6EB)
 F (.\robotLED.h)(0x6723BB9F)()
 F (.\delayFunction.h)(0x6720B3B0)()
@@ -26,7 +26,7 @@ F (.\robotMotorControl.h)(0x6723BB90)()
 F (.\robotAudio.h)(0x6720B3B0)()
 F (.\robotBrain.h)(0x6723CA12)()
 F (.\queue.h)(0x6720B3B0)()
-F (.\robotSerial.h)(0x6723BF19)()
+F (.\robotSerial.h)(0x6723D31F)()
 F (.\ledControl.h)(0x6723C6EB)()
 F (.\robotMacros.h)(0x6722EBAF)()
 F (C:\Users\thtan\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\RTOS2\RTX\Library\ARM\RTX_CM0.lib)(0x5D2590B8)()
@@ -48,7 +48,7 @@ I (C:\Users\thtan\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\RTOS2\RTX\Includ
 I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x5D9AD218)
 I (C:\Users\thtan\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\RTOS2\Include\cmsis_os2.h)(0x5C8F1798)
 F (RTE\CMSIS\RTX_Config.h)(0x6720B3B0)()
-F (RTE\Device\MKL25Z128xxx4\startup_MKL25Z4.s)(0x6720B3B0)(--cpu Cortex-M0+ --pd "__RTX SETA 1" --pd "__EVAL SETA 1" -g --apcs=interwork --pd "__MICROLIB SETA 1"-I.\RTE\CMSIS-I.\RTE\Device\MKL25Z128xxx4-I.\RTE\_Target_1-IC:\Users\thtan\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include-IC:\Users\thtan\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\RTOS2\Include-IC:\Users\thtan\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\RTOS2\RTX\Include-IC:\Users\thtan\AppData\Local\Arm\Packs\Keil\Kinetis_KLxx_DFP\1.15.1\Device\Include--pd "__UVISION_VERSION SETA 529" --pd "_RTE_ SETA 1" --pd "MKL25Z128xxx4 SETA 1"--list .\listings\startup_mkl25z4.lst --xref -o .\objects\startup_mkl25z4.o --depend .\objects\startup_mkl25z4.d)
+F (RTE\Device\MKL25Z128xxx4\startup_MKL25Z4.s)(0x6723D378)(--cpu Cortex-M0+ --pd "__RTX SETA 1" --pd "__EVAL SETA 1" -g --apcs=interwork --pd "__MICROLIB SETA 1"-I.\RTE\CMSIS-I.\RTE\Device\MKL25Z128xxx4-I.\RTE\_Target_1-IC:\Users\thtan\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include-IC:\Users\thtan\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\RTOS2\Include-IC:\Users\thtan\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\RTOS2\RTX\Include-IC:\Users\thtan\AppData\Local\Arm\Packs\Keil\Kinetis_KLxx_DFP\1.15.1\Device\Include--pd "__UVISION_VERSION SETA 529" --pd "_RTE_ SETA 1" --pd "MKL25Z128xxx4 SETA 1"--list .\listings\startup_mkl25z4.lst --xref -o .\objects\startup_mkl25z4.o --depend .\objects\startup_mkl25z4.d)
 F (RTE\Device\MKL25Z128xxx4\system_MKL25Z4.c)(0x6720B3B0)(--c99 --gnu -c --cpu Cortex-M0+ -D__RTX -D__EVAL -D__MICROLIB -g -O0 --apcs=interwork --split_sections-I.\RTE\CMSIS-I.\RTE\Device\MKL25Z128xxx4-I.\RTE\_Target_1-IC:\Users\thtan\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include-IC:\Users\thtan\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\RTOS2\Include-IC:\Users\thtan\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\RTOS2\RTX\Include-IC:\Users\thtan\AppData\Local\Arm\Packs\Keil\Kinetis_KLxx_DFP\1.15.1\Device\Include-D__UVISION_VERSION="529" -D_RTE_ -DMKL25Z128xxx4-o .\objects\system_mkl25z4.o --omf_browse .\objects\system_mkl25z4.crf --depend .\objects\system_mkl25z4.d)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5D9AD218)
 I (C:\Users\thtan\AppData\Local\Arm\Packs\Keil\Kinetis_KLxx_DFP\1.15.1\Device\Include\MKL25Z4.h)(0x585B7C0A)
