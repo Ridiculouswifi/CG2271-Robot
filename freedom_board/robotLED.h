@@ -132,7 +132,7 @@ void runFrontLEDs(void *argument) {
 
 			turnOnFrontLED(i);  
 			osDelay(300);
-			turnOffFrontLED(i);
+			turnOffAllFrontLEDs();
 		}
 	}
 }
