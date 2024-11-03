@@ -9,6 +9,9 @@
 
 ControllerPtr myControllers[BP32_MAX_GAMEPADS];
 
+ControllerPtr myController;
+
+/*
 // This callback gets called any time a new gamepad is connected.
 // Up to 4 gamepads can be connected at the same time.
 void onConnectedController(ControllerPtr ctl) {
@@ -37,7 +40,16 @@ void onConnectedController(ControllerPtr ctl) {
     //## Serial.println("CALLBACK: Controller connected, but could not found empty slot");
   }
 }
+*/
 
+void onConnectedController(ControllerPtr ctl) {
+  ControllerProperties properties = ctl->getProperties();
+  myController = ctl;
+
+  digitalWrite(LED, HIGH);
+}
+
+/*
 void onDisconnectedController(ControllerPtr ctl) {
   bool foundController = false;
 
@@ -57,6 +69,15 @@ void onDisconnectedController(ControllerPtr ctl) {
   if (!foundController) {
     //## Serial.println("CALLBACK: Controller disconnected, but not found in myControllers");
   }
+}
+*/
+
+void onDisconnectedController(ControllerPtr ctl) {
+  myController = nullptr;
+
+  BP32.forgetBluetoothKeys();
+
+  digitalWrite(LED, LOW);
 }
 
 void dumpGamepad(ControllerPtr ctl) {
@@ -173,7 +194,7 @@ void processGamepad(ControllerPtr ctl) {
   }
 }
 
-
+/*
 void processControllers() {
   for (auto myController : myControllers) {
     if (myController && myController->isConnected() && myController->hasData()) {
@@ -184,6 +205,15 @@ void processControllers() {
         //## Serial.println("Unsupported controller");
 
       }
+    }
+  }
+}
+*/
+
+void processController() {
+  if (myController && myController->isConnected() && myController->hasData()) {
+    if (myController->isGamepad()) {
+      processGamepad(myController);
     }
   }
 }
@@ -238,7 +268,7 @@ void loop() {
   // Call this function in your main loop.
   bool dataUpdated = BP32.update();
   if (dataUpdated)
-    processControllers();
+    processController();
   else {
     sendPacketToKL25Z(0x0F);
   }
