@@ -3,6 +3,8 @@
 
 #include "MKL25Z4.h"
 
+#include "cmsis_os2.h"
+
 // Define PWM frequency and buzzer pin
 #define TPM_CLOCK 20971520  // TPM clock frequency (20.97152 MHz)
 #define BUZZER_PIN 1        // PTD1 (TPM0_CH1) for buzzer output
@@ -18,13 +20,17 @@
 #define NOTE_B5  988
 #define REST     0
 
-// Custom delay function
-static void delay(volatile uint32_t nof) {
-    while (nof != 0) {
-        __asm("NOP");
-        nof--;
-    }
-}
+// Define delays
+#define ONE 100
+#define TWO 200
+#define THREE 300
+#define FOUR 400
+#define FIVE 500
+#define SIX 600
+#define SEVEN 700
+#define EIGHT 800
+#define NINE 900
+#define TEN 1000
 
 // Function to initialize the PWM on PTD1
 void initPWM(void) {
@@ -56,102 +62,105 @@ void playTone(uint16_t frequency, uint32_t duration) {
         TPM0->CONTROLS[1].CnV = mod / 2;     // Set duty cycle to 50%
     }
 
-    delay(duration * 1000);  // Delay to maintain tone for the specified duration
+	osDelay(duration); 			// Delay to maintain tone for the specified duration
     TPM0->CONTROLS[1].CnV = 0;  // Stop PWM after duration
 }
 
 // Function to play the celebration melody
-void celebrate() {
-    playTone(NOTE_D5, 200);
-    playTone(NOTE_A4, 200);
-    playTone(NOTE_D5, 200);
-    playTone(NOTE_A5, 275);
-    delay(200000);
-    playTone(NOTE_G5, 275);
-    delay(200000);
-    playTone(NOTE_FS5, 200);
-    playTone(NOTE_E5, 200);
-    playTone(NOTE_CS5, 350);
-    delay(1000000);
+void celebrate(void *argument) {
+	for(;;) {
+		playTone(NOTE_D5, 200);
+		playTone(NOTE_A4, 200);
+		playTone(NOTE_D5, 200);
+		playTone(NOTE_A5, 275);
+		osDelay(200);
+		playTone(NOTE_G5, 275);
+		osDelay(200);
+		playTone(NOTE_FS5, 200);
+		playTone(NOTE_E5, 200);
+		playTone(NOTE_CS5, 350);
+		osDelay(1000);
 
-    playTone(NOTE_CS5, 200);
-    playTone(NOTE_A4, 200);
-    playTone(NOTE_CS5, 200);
-    playTone(NOTE_FS5, 275);
-    delay(200000);
-    playTone(NOTE_E5, 275);
-    delay(200000);
-    playTone(NOTE_CS5, 200);
-    playTone(NOTE_D5, 200);
-    playTone(NOTE_FS5, 350);
-    delay(1000000);
+		playTone(NOTE_CS5, 200);
+		playTone(NOTE_A4, 200);
+		playTone(NOTE_CS5, 200);
+		playTone(NOTE_FS5, 275);
+		osDelay(200);
+		playTone(NOTE_E5, 275);
+		osDelay(200);
+		playTone(NOTE_CS5, 200);
+		playTone(NOTE_D5, 200);
+		playTone(NOTE_FS5, 350);
+		osDelay(1000);
+		
 
-    playTone(NOTE_D5, 200);
-    playTone(NOTE_A4, 200);
-    playTone(NOTE_D5, 200);
-    playTone(NOTE_A5, 275);
-    delay(200000);
-    playTone(NOTE_G5, 275);
-    delay(200000);
-    playTone(NOTE_FS5, 200);
-    playTone(NOTE_E5, 200);
-    playTone(NOTE_CS5, 350);
-    delay(1000000);
+		playTone(NOTE_D5, 200);
+		playTone(NOTE_A4, 200);
+		playTone(NOTE_D5, 200);
+		playTone(NOTE_A5, 275);
+		osDelay(200);
+		playTone(NOTE_G5, 275);
+		osDelay(200);
+		playTone(NOTE_FS5, 200);
+		playTone(NOTE_E5, 200);
+		playTone(NOTE_CS5, 350);
+		osDelay(1000);
 
-    playTone(NOTE_CS5, 200);
-    playTone(NOTE_A4, 200);
-    playTone(NOTE_CS5, 200);
-    playTone(NOTE_FS5, 275);
-    delay(200000);
-    playTone(NOTE_E5, 275);
-    delay(200000);
-    playTone(NOTE_CS5, 200);
-    playTone(NOTE_D5, 200);
-    playTone(NOTE_FS5, 350);
-    delay(1000000);
+		playTone(NOTE_CS5, 200);
+		playTone(NOTE_A4, 200);
+		playTone(NOTE_CS5, 200);
+		playTone(NOTE_FS5, 275);
+		osDelay(200);
+		playTone(NOTE_E5, 275);
+		osDelay(200);
+		playTone(NOTE_CS5, 200);
+		playTone(NOTE_D5, 200);
+		playTone(NOTE_FS5, 350);
+		osDelay(1000);
 
-    playTone(NOTE_FS5, 500);
-    delay(300000);
-    playTone(NOTE_A5, 500);
-    delay(300000);
-    playTone(NOTE_G5, 200);
-    playTone(NOTE_A5, 200);
-    playTone(NOTE_G5, 200);
-    playTone(NOTE_FS5, 200);
-    playTone(NOTE_E5, 500);
-    delay(400000);
-    playTone(NOTE_CS5, 500);
-    delay(300000);
-    playTone(NOTE_E5, 500);
-    delay(300000);
-    playTone(NOTE_FS5, 200);
-    playTone(NOTE_G5, 200);
-    playTone(NOTE_FS5, 200);
-    playTone(NOTE_E5, 200);
-    playTone(NOTE_D5, 500);
-    delay(400000);
-    playTone(NOTE_FS5, 500);
-    delay(300000);
-    playTone(NOTE_A5, 500);
-    delay(300000);
-    playTone(NOTE_G5, 200);
-    playTone(NOTE_FS5, 200);
-    playTone(NOTE_G5, 200);
-    playTone(NOTE_A5, 200);
-    playTone(NOTE_B5, 500);
-    delay(400000);
-    playTone(NOTE_A5, 350);
-    playTone(NOTE_G5, 200);
-    playTone(NOTE_FS5, 200);
-    playTone(NOTE_G5, 500);
-    delay(300000);
-    playTone(NOTE_FS5, 200);
-    playTone(NOTE_G5, 200);
-    playTone(NOTE_FS5, 200);
-    playTone(NOTE_E5, 200);
-    playTone(NOTE_D5, 500);
+		playTone(NOTE_FS5, 500);
+		osDelay(300);
+		playTone(NOTE_A5, 500);
+		osDelay(300);
+		playTone(NOTE_G5, 200);
+		playTone(NOTE_A5, 200);
+		playTone(NOTE_G5, 200);
+		playTone(NOTE_FS5, 200);
+		playTone(NOTE_E5, 500);
+		osDelay(400);
+		playTone(NOTE_CS5, 500);
+		osDelay(300);
+		playTone(NOTE_E5, 500);
+		osDelay(300);
+		playTone(NOTE_FS5, 200);
+		playTone(NOTE_G5, 200);
+		playTone(NOTE_FS5, 200);
+		playTone(NOTE_E5, 200);
+		playTone(NOTE_D5, 500);
+		osDelay(400);
+		playTone(NOTE_FS5, 500);
+		osDelay(300);
+		playTone(NOTE_A5, 500);
+		osDelay(300);
+		playTone(NOTE_G5, 200);
+		playTone(NOTE_FS5, 200);
+		playTone(NOTE_G5, 200);
+		playTone(NOTE_A5, 200);
+		playTone(NOTE_B5, 500);
+		osDelay(400);
+		playTone(NOTE_A5, 350);
+		playTone(NOTE_G5, 200);
+		playTone(NOTE_FS5, 200);
+		playTone(NOTE_G5, 500);
+		osDelay(300);
+		playTone(NOTE_FS5, 200);
+		playTone(NOTE_G5, 200);
+		playTone(NOTE_FS5, 200);
+		playTone(NOTE_E5, 200);
+		playTone(NOTE_D5, 500);
 
-    TPM0->CONTROLS[1].CnV = 0;  // Ensure the buzzer is off after the melody
+		TPM0->CONTROLS[1].CnV = 0;  // Ensure the buzzer is off after the melody
+	}
 }
 
 #endif
