@@ -1,50 +1,157 @@
 #ifndef robotAudio
 #define robotAudio
 
-#include "MKL25Z4.h"  // Include device-specific header for KL25Z
+#include "MKL25Z4.h"
 
-#define PWM_FREQUENCY 48000 // Assuming the core clock is running at 48 MHz
+// Define PWM frequency and buzzer pin
+#define TPM_CLOCK 20971520  // TPM clock frequency (20.97152 MHz)
+#define BUZZER_PIN 1        // PTD1 (TPM0_CH1) for buzzer output
 
-// Frequency for different musical notes (in Hz)
-#define NOTE_C 262
-#define NOTE_D 294
-#define NOTE_E 330
-#define NOTE_F 349
-#define NOTE_G 392
-#define NOTE_A 440
-#define NOTE_B 494
+// Define frequencies for each musical note (in Hz)
+#define NOTE_D5  587
+#define NOTE_A4  440
+#define NOTE_A5  880
+#define NOTE_G5  784
+#define NOTE_FS5 740
+#define NOTE_E5  659
+#define NOTE_CS5 554
+#define NOTE_B5  988
+#define REST     0
 
+// Custom delay function
+static void delay(volatile uint32_t nof) {
+    while (nof != 0) {
+        __asm("NOP");
+        nof--;
+    }
+}
+
+// Function to initialize the PWM on PTD1
 void initPWM(void) {
-    // Enable clock for TPM0 and Port C (assuming the buzzer is connected to a pin on Port C)
-    SIM->SCGC6 |= SIM_SCGC6_TPM0_MASK;  // Enable clock for TPM0
-    SIM->SCGC5 |= SIM_SCGC5_PORTC_MASK; // Enable clock for Port C
+    // Enable clock for Port D and TPM0
+    SIM->SCGC5 |= SIM_SCGC5_PORTD_MASK;
+    SIM->SCGC6 |= SIM_SCGC6_TPM0_MASK;
 
-    // Configure the port pin for PWM (e.g., PTC1 for TPM0_CH0)
-    PORTC->PCR[1] = PORT_PCR_MUX(4);  // Set PTC1 to TPM0_CH0 (generate pwm)
+    // Set PTD1 to TPM0_CH1 (Alternative 4 function)
+    PORTD->PCR[BUZZER_PIN] &= ~PORT_PCR_MUX_MASK;
+    PORTD->PCR[BUZZER_PIN] |= PORT_PCR_MUX(4);
 
-    // Set TPM clock source
-    SIM->SOPT2 |= SIM_SOPT2_TPMSRC(1);  
+    // Set TPM clock source to MCGFLLCLK (20.97152 MHz)
+    SIM->SOPT2 |= SIM_SOPT2_TPMSRC(1);
 
-    TPM0->SC = TPM_SC_PS(0);  // Prescaler divide by 1
-    TPM0->SC |= TPM_SC_CMOD(1);  // Enable TPM counter
+    // Set TPM0 prescaler to divide by 1 and enable counter
+    TPM0->SC = TPM_SC_PS(0) | TPM_SC_CMOD(1);
 
-    // Set the PWM mode for TPM0 channel 0
-    TPM0->CONTROLS[0].CnSC = TPM_CnSC_MSB_MASK | TPM_CnSC_ELSB_MASK;  // Edge-aligned PWM, high-true pulses
+    // Configure TPM0 Channel 1 for edge-aligned PWM, high-true pulses
+    TPM0->CONTROLS[1].CnSC = TPM_CnSC_MSB_MASK | TPM_CnSC_ELSB_MASK;
 }
 
-// Function to play a note at a specified frequency (in Hz)
-void playNote(uint16_t frequency) {
-    // Calculate the MOD value to generate the desired frequency
-    TPM0->MOD = (PWM_FREQUENCY / frequency) - 1;
+// Function to play a tone at a given frequency and duration
+void playTone(uint16_t frequency, uint32_t duration) {
+    if (frequency == REST) {
+        TPM0->CONTROLS[1].CnV = 0;  // Stop PWM output for rest
+    } else {
+        uint32_t mod = (TPM_CLOCK / frequency) - 1;
+        TPM0->MOD = mod;                     // Set MOD value
+        TPM0->CONTROLS[1].CnV = mod / 2;     // Set duty cycle to 50%
+    }
 
-    // Set the duty cycle to 50% (or adjust as necessary)
-    TPM0->CONTROLS[0].CnV = TPM0->MOD / 2;
+    delay(duration * 1000);  // Delay to maintain tone for the specified duration
+    TPM0->CONTROLS[1].CnV = 0;  // Stop PWM after duration
 }
 
-// Function to stop playing the note (turn off the sound)
-void stopNote(void) {
-    TPM0->CONTROLS[0].CnV = 0;  // Set duty cycle to 0 (no sound)
-}
+// Function to play the celebration melody
+void celebrate() {
+    playTone(NOTE_D5, 200);
+    playTone(NOTE_A4, 200);
+    playTone(NOTE_D5, 200);
+    playTone(NOTE_A5, 275);
+    delay(200000);
+    playTone(NOTE_G5, 275);
+    delay(200000);
+    playTone(NOTE_FS5, 200);
+    playTone(NOTE_E5, 200);
+    playTone(NOTE_CS5, 350);
+    delay(1000000);
 
+    playTone(NOTE_CS5, 200);
+    playTone(NOTE_A4, 200);
+    playTone(NOTE_CS5, 200);
+    playTone(NOTE_FS5, 275);
+    delay(200000);
+    playTone(NOTE_E5, 275);
+    delay(200000);
+    playTone(NOTE_CS5, 200);
+    playTone(NOTE_D5, 200);
+    playTone(NOTE_FS5, 350);
+    delay(1000000);
+
+    playTone(NOTE_D5, 200);
+    playTone(NOTE_A4, 200);
+    playTone(NOTE_D5, 200);
+    playTone(NOTE_A5, 275);
+    delay(200000);
+    playTone(NOTE_G5, 275);
+    delay(200000);
+    playTone(NOTE_FS5, 200);
+    playTone(NOTE_E5, 200);
+    playTone(NOTE_CS5, 350);
+    delay(1000000);
+
+    playTone(NOTE_CS5, 200);
+    playTone(NOTE_A4, 200);
+    playTone(NOTE_CS5, 200);
+    playTone(NOTE_FS5, 275);
+    delay(200000);
+    playTone(NOTE_E5, 275);
+    delay(200000);
+    playTone(NOTE_CS5, 200);
+    playTone(NOTE_D5, 200);
+    playTone(NOTE_FS5, 350);
+    delay(1000000);
+
+    playTone(NOTE_FS5, 500);
+    delay(300000);
+    playTone(NOTE_A5, 500);
+    delay(300000);
+    playTone(NOTE_G5, 200);
+    playTone(NOTE_A5, 200);
+    playTone(NOTE_G5, 200);
+    playTone(NOTE_FS5, 200);
+    playTone(NOTE_E5, 500);
+    delay(400000);
+    playTone(NOTE_CS5, 500);
+    delay(300000);
+    playTone(NOTE_E5, 500);
+    delay(300000);
+    playTone(NOTE_FS5, 200);
+    playTone(NOTE_G5, 200);
+    playTone(NOTE_FS5, 200);
+    playTone(NOTE_E5, 200);
+    playTone(NOTE_D5, 500);
+    delay(400000);
+    playTone(NOTE_FS5, 500);
+    delay(300000);
+    playTone(NOTE_A5, 500);
+    delay(300000);
+    playTone(NOTE_G5, 200);
+    playTone(NOTE_FS5, 200);
+    playTone(NOTE_G5, 200);
+    playTone(NOTE_A5, 200);
+    playTone(NOTE_B5, 500);
+    delay(400000);
+    playTone(NOTE_A5, 350);
+    playTone(NOTE_G5, 200);
+    playTone(NOTE_FS5, 200);
+    playTone(NOTE_G5, 500);
+    delay(300000);
+    playTone(NOTE_FS5, 200);
+    playTone(NOTE_G5, 200);
+    playTone(NOTE_FS5, 200);
+    playTone(NOTE_E5, 200);
+    playTone(NOTE_D5, 500);
+
+    TPM0->CONTROLS[1].CnV = 0;  // Ensure the buzzer is off after the melody
+}
 
 #endif
