@@ -33,7 +33,7 @@ int main(void) {
 	initLEDTest();
 	initUART2(BAUD_RATE);
 	initMotor();
-	//initPWM();
+	initPWM();
 	initFrontLEDs();
 	initRearLEDs();
 	
@@ -41,6 +41,7 @@ int main(void) {
 	osKernelInitialize();
 	
 	osThreadNew(interfaceCommand, NULL, NULL);
+	osThreadNew(celebrate, NULL, NULL);
 	
 	frontRun = osThreadNew(runFrontLEDs, NULL, NULL);
 	frontStop = osThreadNew(stopFrontLEDs, NULL, NULL);

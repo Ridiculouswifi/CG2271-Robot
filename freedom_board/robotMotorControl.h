@@ -111,31 +111,31 @@ void motorControl(int state, int speed) {
 		break;
 
 	case FORWARD_RIGHT_TURN:
-		TPM1_C0V = dutyCycle; 		// A1 IN
-		TPM1_C1V = 0; 				// A2 IN
-		TPM2_C0V = dutyCycle * 0.5; // B1 IN
-		TPM2_C1V = 0; 				// B2 IN
-		break;
-
-	case FORWARD_LEFT_TURN:
-		TPM1_C0V = dutyCycle * 0.5; // A1 IN
+		TPM1_C0V = 0; //dutyCycle * 0.5; 		// A1 IN
 		TPM1_C1V = 0; 				// A2 IN
 		TPM2_C0V = dutyCycle; 		// B1 IN
 		TPM2_C1V = 0; 				// B2 IN
 		break;
 
+	case FORWARD_LEFT_TURN:
+		TPM1_C0V = dutyCycle; 		// A1 IN
+		TPM1_C1V = 0; 				// A2 IN
+		TPM2_C0V = 0; //dutyCycle * 0.5; 		// B1 IN
+		TPM2_C1V = 0; 				// B2 IN
+		break;
+
 	case BACKWARDS_LEFT_TURN:
 		TPM1_C0V = 0; 				// A1 IN
-		TPM1_C1V = dutyCycle * 0.5; // A2 IN
+		TPM1_C1V = dutyCycle; 		// A2 IN
 		TPM2_C0V = 0; 				// B1 IN
-		TPM2_C1V = dutyCycle; 		// B2 IN
+		TPM2_C1V = 0; //dutyCycle * 0.5; 		// B2 IN
 		break;
 
 	case BACKWARDS_RIGHT_TURN:
 		TPM1_C0V = 0; 				// A1 IN
-		TPM1_C1V = dutyCycle; 		// A2 IN
+		TPM1_C1V = 0; //dutyCycle * 0.5; 		// A2 IN
 		TPM2_C0V = 0; 				// B1 IN
-		TPM2_C1V = dutyCycle * 0.5; // B2 IN
+		TPM2_C1V = dutyCycle; 		// B2 IN
 		break;
 
 	default:
