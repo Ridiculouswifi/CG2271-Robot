@@ -23,7 +23,7 @@
 #define NOTE_E4  330
 #define NOTE_GS5 831
 #define NOTE_C5  523
-#define NOTE_D4  294+
+#define NOTE_D4  294
 #define REST     0
 
 // Define delays
@@ -37,6 +37,20 @@
 #define EIGHT 800
 #define NINE 900
 #define TEN 1000
+
+// Notes and Delays for Music
+int celebrateNotes[44] = {NOTE_D5, NOTE_A4, NOTE_D5, NOTE_A5, REST, NOTE_G5, REST, NOTE_FS5, NOTE_E5, NOTE_CS5, REST,
+			NOTE_CS5, NOTE_A4, NOTE_CS5, NOTE_FS5, REST, NOTE_E5, REST, NOTE_CS5, NOTE_D5, NOTE_FS5, REST,
+			NOTE_D5, NOTE_A4, NOTE_D5, NOTE_A5, REST, NOTE_G5, REST, NOTE_FS5, NOTE_E5, NOTE_CS5, REST,
+			NOTE_CS5, NOTE_A4, NOTE_CS5, NOTE_FS5, REST, NOTE_E5, REST, NOTE_CS5, NOTE_D5, NOTE_FS5, REST};
+int celebrateDelays[44] = {200, 200, 200, 275, 200, 275, 200, 200, 200, 350, 1000,
+			200, 200, 200, 275, 200, 275, 200, 200, 200, 350, 1000,
+			200, 200, 200, 275, 200, 275, 200, 200, 200, 350, 1000,
+			200, 200, 200, 275, 200, 275, 200, 200, 200, 350, 1000};
+int takeOnMeNotes[32] = {NOTE_FS5, NOTE_FS5, NOTE_D5, NOTE_B4, REST, NOTE_B4, REST, NOTE_E5,
+			REST, NOTE_E5, REST, NOTE_E5, NOTE_GS5, NOTE_GS5, NOTE_A5, NOTE_B5,
+			NOTE_A5, NOTE_A5, NOTE_A5, NOTE_E5, REST, NOTE_D5, REST, NOTE_FS5,
+			REST, NOTE_FS5, REST, NOTE_FS5, NOTE_E5, NOTE_E5, NOTE_FS5, NOTE_E5};
 
 // Function to initialize the PWM on PTD1
 void initPWM(void) {
@@ -76,7 +90,16 @@ void playTone(uint16_t frequency, uint32_t duration) {
 
 // Function to play the celebration melody
 void celebrate(void *argument) {
-    
+    for (;;) {
+		for (int i = 0; i < 44; i++) {
+			osThreadFlagsWait(END, osFlagsWaitAny, osWaitForever);
+			
+			playTone(celebrateNotes[i], celebrateDelays[i]);
+		}
+	}
+	
+	
+	/*
 	for(;;) {
 		osThreadFlagsWait(END, osFlagsWaitAny, osWaitForever);
 		
@@ -105,6 +128,11 @@ void celebrate(void *argument) {
 		playTone(NOTE_D5, 200);
 		playTone(NOTE_FS5, 350);
 		playTone(REST, 1000); // REST
+		
+		int celebrateDelays[44] = {200, 200, 200, 275, 200, 275, 200, 200, 200, 350, 1000,
+				200, 200, 200, 275, 200, 275, 200, 200, 200, 350, 1000,
+				200, 200, 200, 275, 200, 275, 200, 200, 200, 350, 1000,
+				200, 200, 200, 275, 200, 275, 200, 200, 200, 350, 1000};
 
 		osThreadFlagsWait(END, osFlagsWaitAny, osWaitForever);
 		
@@ -135,10 +163,21 @@ void celebrate(void *argument) {
 		playTone(REST, 1000); // REST
 	}
     //TPM0->CONTROLS[1].CnV = 0;  // Ensure the buzzer is off after the melody
+	*/
 }
 
 // Function to play the Take on Me melody
 void takeOnMe(void *argument) {
+	for(;;) {
+		for (int i = 0; i < 32; i++) {
+			osThreadFlagsWait(IN_PROGRESS, osFlagsWaitAny, osWaitForever);
+			
+			playTone(takeOnMeNotes[i], TWO);
+		}
+	}
+	
+	
+	/*
     for (;;) {
 		osThreadFlagsWait(IN_PROGRESS, osFlagsWaitAny, osWaitForever);
 		
@@ -187,6 +226,7 @@ void takeOnMe(void *argument) {
         // Repeat or end as needed
         //TPM0->CONTROLS[1].CnV = 0;  // Ensure the buzzer is off after the melody
     }
+	*/
 }
 
 #endif
