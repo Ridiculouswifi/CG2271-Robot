@@ -154,10 +154,14 @@ void handleCommand(int command) {
 	} else if (command == 0x30) {
 		// High Speed
 		speed = 80;
+		
+		musicStatus = 0;
 	
 	} else if (command == 0x40) {
 		// Low Speed
 		speed = 50;
+		
+		musicStatus = 0;
 		
 	} else {
 		// Command is not recognised, discard command
