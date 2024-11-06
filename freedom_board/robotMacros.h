@@ -12,6 +12,6 @@
 #define END 0x04
 
 osThreadId_t frontRun, frontStop, rearRun, rearStop;
-osThreadId_t movingAudio, stopAudio;
+osThreadId_t inProgress, ending;
 
 #endif

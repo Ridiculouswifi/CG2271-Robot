@@ -50,13 +50,15 @@ void initPWM(void) {
     SIM->SOPT2 |= SIM_SOPT2_TPMSRC(1);         // Set TPM clock source to MCGFLLCLK (20.97152 MHz)
 
 	TPM0->SC &= ~((TPM_SC_CMOD_MASK) | (TPM_SC_PS_MASK));
-    TPM0->SC |= TPM_SC_PS(3) | TPM_SC_CMOD(1);  // Set prescaler to divide by 1 and enable counter
+    TPM0->SC |= TPM_SC_PS(3);  					// Set prescaler to divide by 4
 	TPM0->SC &= ~(TPM_SC_CPWMS_MASK);
 	
 	TPM0_C1SC &= ~((TPM_CnSC_ELSB_MASK) | (TPM_CnSC_ELSA_MASK) | (TPM_CnSC_MSB_MASK) | (TPM_CnSC_MSA_MASK));
     TPM0_C1SC |= TPM_CnSC_MSB(1) | TPM_CnSC_ELSB(1);  // Configure TPM0 Channel 1 for edge-aligned PWM
 	
 	TPM0_C1V = 0;
+	
+	TPM0->SC |= TPM_SC_CMOD(1);					// Start Counter
 }
 
 // Function to play a tone at a given frequency and duration
@@ -76,57 +78,61 @@ void playTone(uint16_t frequency, uint32_t duration) {
 void celebrate(void *argument) {
     
 	for(;;) {
-	osThreadFlagsWait(END, osFlagsWaitAny, osWaitForever);
-	playTone(NOTE_D5, 200);
-    playTone(NOTE_A4, 200);
-    playTone(NOTE_D5, 200);
-    playTone(NOTE_A5, 275);
-	playTone(REST, 200); // REST
-    playTone(NOTE_G5, 275);
-    playTone(REST, 200); // REST
-    playTone(NOTE_FS5, 200);
-    playTone(NOTE_E5, 200);
-    playTone(NOTE_CS5, 350);
-    playTone(REST, 1000); // REST
+		osThreadFlagsWait(END, osFlagsWaitAny, osWaitForever);
+		
+		playTone(NOTE_D5, 200);
+		playTone(NOTE_A4, 200);
+		playTone(NOTE_D5, 200);
+		playTone(NOTE_A5, 275);
+		playTone(REST, 200); // REST
+		playTone(NOTE_G5, 275);
+		playTone(REST, 200); // REST
+		playTone(NOTE_FS5, 200);
+		playTone(NOTE_E5, 200);
+		playTone(NOTE_CS5, 350);
+		playTone(REST, 1000); // REST
 
-	osThreadFlagsWait(END, osFlagsWaitAny, osWaitForever);
-    playTone(NOTE_CS5, 200);
-    playTone(NOTE_A4, 200);
-    playTone(NOTE_CS5, 200);
-    playTone(NOTE_FS5, 275);
-    playTone(REST, 200); // REST
-    playTone(NOTE_E5, 275);
-    playTone(REST, 200); // REST
-    playTone(NOTE_CS5, 200);
-    playTone(NOTE_D5, 200);
-    playTone(NOTE_FS5, 350);
-    playTone(REST, 1000); // REST
+		osThreadFlagsWait(END, osFlagsWaitAny, osWaitForever);
+		
+		playTone(NOTE_CS5, 200);
+		playTone(NOTE_A4, 200);
+		playTone(NOTE_CS5, 200);
+		playTone(NOTE_FS5, 275);
+		playTone(REST, 200); // REST
+		playTone(NOTE_E5, 275);
+		playTone(REST, 200); // REST
+		playTone(NOTE_CS5, 200);
+		playTone(NOTE_D5, 200);
+		playTone(NOTE_FS5, 350);
+		playTone(REST, 1000); // REST
 
-	osThreadFlagsWait(END, osFlagsWaitAny, osWaitForever);
-    playTone(NOTE_D5, 200);
-    playTone(NOTE_A4, 200);
-    playTone(NOTE_D5, 200);
-    playTone(NOTE_A5, 275);
-    playTone(REST, 200); // REST
-    playTone(NOTE_G5, 275);
-    playTone(REST, 200); // REST
-    playTone(NOTE_FS5, 200);
-    playTone(NOTE_E5, 200);
-    playTone(NOTE_CS5, 350);
-    playTone(REST, 1000); // REST
+		osThreadFlagsWait(END, osFlagsWaitAny, osWaitForever);
+		
+		playTone(NOTE_D5, 200);
+		playTone(NOTE_A4, 200);
+		playTone(NOTE_D5, 200);
+		playTone(NOTE_A5, 275);
+		playTone(REST, 200); // REST
+		playTone(NOTE_G5, 275);
+		playTone(REST, 200); // REST
+		playTone(NOTE_FS5, 200);
+		playTone(NOTE_E5, 200);
+		playTone(NOTE_CS5, 350);
+		playTone(REST, 1000); // REST
 
-	osThreadFlagsWait(END, osFlagsWaitAny, osWaitForever);
-    playTone(NOTE_CS5, 200);
-    playTone(NOTE_A4, 200);
-    playTone(NOTE_CS5, 200);
-    playTone(NOTE_FS5, 275);
-    playTone(REST, 200); // REST
-    playTone(NOTE_E5, 275);
-    playTone(REST, 200); // REST
-    playTone(NOTE_CS5, 200);
-    playTone(NOTE_D5, 200);
-    playTone(NOTE_FS5, 350);
-    playTone(REST, 1000); // REST
+		osThreadFlagsWait(END, osFlagsWaitAny, osWaitForever);
+		
+		playTone(NOTE_CS5, 200);
+		playTone(NOTE_A4, 200);
+		playTone(NOTE_CS5, 200);
+		playTone(NOTE_FS5, 275);
+		playTone(REST, 200); // REST
+		playTone(NOTE_E5, 275);
+		playTone(REST, 200); // REST
+		playTone(NOTE_CS5, 200);
+		playTone(NOTE_D5, 200);
+		playTone(NOTE_FS5, 350);
+		playTone(REST, 1000); // REST
 	}
     //TPM0->CONTROLS[1].CnV = 0;  // Ensure the buzzer is off after the melody
 }
@@ -135,6 +141,7 @@ void celebrate(void *argument) {
 void takeOnMe(void *argument) {
     for (;;) {
 		osThreadFlagsWait(IN_PROGRESS, osFlagsWaitAny, osWaitForever);
+		
         playTone(NOTE_FS5, TWO);
         playTone(NOTE_FS5, TWO);
         playTone(NOTE_D5, TWO);
@@ -145,6 +152,7 @@ void takeOnMe(void *argument) {
         playTone(NOTE_E5, TWO);
         
 		osThreadFlagsWait(IN_PROGRESS, osFlagsWaitAny, osWaitForever);
+		
         playTone(REST, TWO);
         playTone(NOTE_E5, TWO);
         playTone(REST, TWO);
@@ -155,6 +163,7 @@ void takeOnMe(void *argument) {
         playTone(NOTE_B5, TWO);
         
 		osThreadFlagsWait(IN_PROGRESS, osFlagsWaitAny, osWaitForever);
+		
         playTone(NOTE_A5, TWO);
         playTone(NOTE_A5, TWO);
         playTone(NOTE_A5, TWO);
@@ -165,6 +174,7 @@ void takeOnMe(void *argument) {
         playTone(NOTE_FS5, TWO);
         
 		osThreadFlagsWait(IN_PROGRESS, osFlagsWaitAny, osWaitForever);
+		
         playTone(REST, TWO);
         playTone(NOTE_FS5, TWO);
         playTone(REST, TWO);
