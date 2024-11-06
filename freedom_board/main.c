@@ -41,7 +41,9 @@ int main(void) {
 	osKernelInitialize();
 	
 	osThreadNew(interfaceCommand, NULL, NULL);
-	osThreadNew(celebrate, NULL, NULL);
+	
+	movingAudio = osThreadNew(takeOnMe, NULL, NULL);
+	stopAudio = osThreadNew(celebrate, NULL, NULL);
 	
 	frontRun = osThreadNew(runFrontLEDs, NULL, NULL);
 	frontStop = osThreadNew(stopFrontLEDs, NULL, NULL);

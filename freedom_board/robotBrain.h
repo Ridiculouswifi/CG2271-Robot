@@ -27,27 +27,31 @@ void handleCommand(int command) {
 		// Move Front
 		osThreadFlagsSet(frontRun, MOVING);
 		osThreadFlagsSet(rearRun, MOVING);
+		osThreadFlagsSet(movingAudio, MOVING);
 		osThreadFlagsClear(STATIONARY);
+		osThreadFlagsClear(END);
 		
 		ledControl(GREEN);
-		offLED();
 		motorControl(STRAIGHT, 70); // Hard Coded for forward movement
 		
 	} else if (command == 0x02) {
 		// Move Back
 		osThreadFlagsSet(frontRun, MOVING);
 		osThreadFlagsSet(rearRun, MOVING);
+		osThreadFlagsSet(movingAudio, IN_PROGRESS);
 		osThreadFlagsClear(STATIONARY);
+		osThreadFlagsClear(END);
 		
 		ledControl(WHITE);
-		offLED();
 		motorControl(REVERSE, 70);
 		
 	} else if (command == 0x08) {
 		// Turn Left on the spot
 		osThreadFlagsSet(frontRun, MOVING);
 		osThreadFlagsSet(rearRun, MOVING);
+		osThreadFlagsSet(movingAudio, IN_PROGRESS);
 		osThreadFlagsClear(STATIONARY);
+		osThreadFlagsClear(END);
 		
 		ledControl(BLUE);
 		motorControl(TURN_ANTICLOCKWISE, 85);
@@ -56,7 +60,9 @@ void handleCommand(int command) {
 		// Turn Right on the spot
 		osThreadFlagsSet(frontRun, MOVING);
 		osThreadFlagsSet(rearRun, MOVING);
+		osThreadFlagsSet(movingAudio, IN_PROGRESS);
 		osThreadFlagsClear(STATIONARY);
+		osThreadFlagsClear(END);
 		
 		ledControl(BLUE);
 		motorControl(TURN_CLOCKWISE, 85);
@@ -65,7 +71,9 @@ void handleCommand(int command) {
 		// Move Front and Turn Left
 		osThreadFlagsSet(frontRun, MOVING);
 		osThreadFlagsSet(rearRun, MOVING);
+		osThreadFlagsSet(movingAudio, IN_PROGRESS);
 		osThreadFlagsClear(STATIONARY);
+		osThreadFlagsClear(END);
 		
 		ledControl(SKY);
 		motorControl(FORWARD_LEFT_TURN, 60);
@@ -74,7 +82,9 @@ void handleCommand(int command) {
 		// Move Front and Turn Right
 		osThreadFlagsSet(frontRun, MOVING);
 		osThreadFlagsSet(rearRun, MOVING);
+		osThreadFlagsSet(movingAudio, IN_PROGRESS);
 		osThreadFlagsClear(STATIONARY);
+		osThreadFlagsClear(END);
 		
 		ledControl(SKY);
 		motorControl(FORWARD_RIGHT_TURN, 60);
@@ -83,7 +93,9 @@ void handleCommand(int command) {
 		// Move Back and Turn Left
 		osThreadFlagsSet(frontRun, MOVING);
 		osThreadFlagsSet(rearRun, MOVING);
+		osThreadFlagsSet(movingAudio, IN_PROGRESS);
 		osThreadFlagsClear(STATIONARY);
+		osThreadFlagsClear(END);
 		
 		ledControl(SKY);
 		motorControl(BACKWARDS_LEFT_TURN, 60);
@@ -92,7 +104,9 @@ void handleCommand(int command) {
 		// Move Back and Turn Right
 		osThreadFlagsSet(frontRun, MOVING);
 		osThreadFlagsSet(rearRun, MOVING);
+		osThreadFlagsSet(movingAudio, IN_PROGRESS);
 		osThreadFlagsClear(STATIONARY);
+		osThreadFlagsClear(END);
 		
 		ledControl(SKY);
 		motorControl(BACKWARDS_RIGHT_TURN, 60);
@@ -101,40 +115,44 @@ void handleCommand(int command) {
 		// Stop
 		osThreadFlagsSet(frontStop, STATIONARY);
 		osThreadFlagsSet(rearStop, STATIONARY);
+		osThreadFlagsSet(movingAudio, IN_PROGRESS);
 		osThreadFlagsClear(MOVING);
+		osThreadFlagsClear(END);
 		
 		ledControl(RED);
-		onLED();
 		motorControl(STOP, 0);
 		
 	} else if (command == 0x0F) {
 		// No Processed Data, Stop
 		osThreadFlagsSet(frontStop, STATIONARY);
 		osThreadFlagsSet(rearStop, STATIONARY);
+		osThreadFlagsSet(movingAudio, IN_PROGRESS);
 		osThreadFlagsClear(MOVING);
+		osThreadFlagsClear(END);
 		
 		ledControl(PURPLE);
-		onLED();
 		motorControl(STOP, 0);
 	
 	} else if (command == 0xAA) {
 		// Controller Issues
 		osThreadFlagsSet(frontStop, STATIONARY);
 		osThreadFlagsSet(rearStop, STATIONARY);
+		osThreadFlagsSet(movingAudio, IN_PROGRESS);
 		osThreadFlagsClear(MOVING);
+		osThreadFlagsClear(END);
 		
 		ledControl(OFF);
-		onLED();
 		motorControl(STOP, 0);
 	
 	} else {
 		// Command is not recognised, discard command
 		osThreadFlagsSet(frontStop, STATIONARY);
 		osThreadFlagsSet(rearStop, STATIONARY);
+		osThreadFlagsSet(movingAudio, IN_PROGRESS);
 		osThreadFlagsClear(MOVING);
+		osThreadFlagsClear(END);
 		
 		ledControl(YELLOW);
-		onLED();
 		motorControl(STOP, 0);
 	}
 	
