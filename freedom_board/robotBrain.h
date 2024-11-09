@@ -51,7 +51,7 @@ void handleCommand(int command) {
 		osThreadFlagsClear(STATIONARY);
 		
 		ledControl(GREEN);
-		motorControl(STRAIGHT, 60); // Hard Coded for forward movement
+		motorControl(STRAIGHT, 100); // Hard Coded for forward movement
 		
 	} else if (command == 0x02) {
 		// Move Back
@@ -60,7 +60,7 @@ void handleCommand(int command) {
 		osThreadFlagsClear(STATIONARY);
 		
 		ledControl(WHITE);
-		motorControl(REVERSE, 60);
+		motorControl(REVERSE, 100);
 		
 	} else if (command == 0x08) {
 		// Turn Left on the spot
@@ -69,7 +69,7 @@ void handleCommand(int command) {
 		osThreadFlagsClear(STATIONARY);
 		
 		ledControl(BLUE);
-		motorControl(TURN_ANTICLOCKWISE, 75);
+		motorControl(TURN_ANTICLOCKWISE, 80);
 		
 	} else if (command == 0x04) {
 		// Turn Right on the spot
@@ -78,7 +78,7 @@ void handleCommand(int command) {
 		osThreadFlagsClear(STATIONARY);
 		
 		ledControl(BLUE);
-		motorControl(TURN_CLOCKWISE, 75);
+		motorControl(TURN_CLOCKWISE, 80);
 		
 	} else if (command == 0x09) {
 		// Move Front and Turn Left
@@ -87,7 +87,7 @@ void handleCommand(int command) {
 		osThreadFlagsClear(STATIONARY);
 		
 		ledControl(SKY);
-		motorControl(FORWARD_LEFT_TURN, 60);
+		motorControl(FORWARD_LEFT_TURN, 100);
 		
 	} else if (command == 0x05) {
 		// Move Front and Turn Right
@@ -96,7 +96,7 @@ void handleCommand(int command) {
 		osThreadFlagsClear(STATIONARY);
 		
 		ledControl(SKY);
-		motorControl(FORWARD_RIGHT_TURN, 60);
+		motorControl(FORWARD_RIGHT_TURN, 100);
 		
 	} else if (command == 0x0a) {
 		// Move Back and Turn Left
@@ -105,7 +105,7 @@ void handleCommand(int command) {
 		osThreadFlagsClear(STATIONARY);
 		
 		ledControl(SKY);
-		motorControl(BACKWARDS_LEFT_TURN, 60);
+		motorControl(BACKWARDS_LEFT_TURN, 100);
 		
 	} else if (command == 0x06) {
 		// Move Back and Turn Right
@@ -114,7 +114,7 @@ void handleCommand(int command) {
 		osThreadFlagsClear(STATIONARY);
 		
 		ledControl(SKY);
-		motorControl(BACKWARDS_RIGHT_TURN, 60);
+		motorControl(BACKWARDS_RIGHT_TURN, 100);
 		
 	} else if (command == 0x00) {
 		// Stop
