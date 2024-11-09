@@ -51,7 +51,7 @@ void handleCommand(int command) {
 		osThreadFlagsClear(STATIONARY);
 		
 		ledControl(GREEN);
-		motorControl(STRAIGHT, 70); // Hard Coded for forward movement
+		motorControl(STRAIGHT, 60); // Hard Coded for forward movement
 		
 	} else if (command == 0x02) {
 		// Move Back
@@ -60,7 +60,7 @@ void handleCommand(int command) {
 		osThreadFlagsClear(STATIONARY);
 		
 		ledControl(WHITE);
-		motorControl(REVERSE, 70);
+		motorControl(REVERSE, 60);
 		
 	} else if (command == 0x08) {
 		// Turn Left on the spot
@@ -69,7 +69,7 @@ void handleCommand(int command) {
 		osThreadFlagsClear(STATIONARY);
 		
 		ledControl(BLUE);
-		motorControl(TURN_ANTICLOCKWISE, 85);
+		motorControl(TURN_ANTICLOCKWISE, 75);
 		
 	} else if (command == 0x04) {
 		// Turn Right on the spot
@@ -78,7 +78,7 @@ void handleCommand(int command) {
 		osThreadFlagsClear(STATIONARY);
 		
 		ledControl(BLUE);
-		motorControl(TURN_CLOCKWISE, 85);
+		motorControl(TURN_CLOCKWISE, 75);
 		
 	} else if (command == 0x09) {
 		// Move Front and Turn Left

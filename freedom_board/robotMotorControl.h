@@ -84,7 +84,7 @@ void motorControl(int state, int speed) {
 	switch (state) {
 	case STRAIGHT:
 		TPM1_C0V = 0; 			// A1 IN
-		TPM1_C1V = dutyCycle;	// A2 IN
+		TPM1_C1V = dutyCycle * 0.7;	// A2 IN
 		TPM2_C0V = 0; 			// B1 IN
 		TPM2_C1V = dutyCycle;	// B2 IN
 		break;
