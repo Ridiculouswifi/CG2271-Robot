@@ -38,6 +38,9 @@
 #define NINE 900
 #define TEN 1000
 
+#define eightth 185
+#define quarter 350
+#define stop 20
 // Notes and Delays for Music
 int celebrateNotes[44] = {NOTE_D5, NOTE_A4, NOTE_D5, NOTE_A5, REST, NOTE_G5, REST, NOTE_FS5, NOTE_E5, NOTE_CS5, REST,
 			NOTE_CS5, NOTE_A4, NOTE_CS5, NOTE_FS5, REST, NOTE_E5, REST, NOTE_CS5, NOTE_D5, NOTE_FS5, REST,
@@ -51,6 +54,10 @@ int takeOnMeNotes[32] = {NOTE_FS5, NOTE_FS5, NOTE_D5, NOTE_B4, REST, NOTE_B4, RE
 			REST, NOTE_E5, REST, NOTE_E5, NOTE_GS5, NOTE_GS5, NOTE_A5, NOTE_B5,
 			NOTE_A5, NOTE_A5, NOTE_A5, NOTE_E5, REST, NOTE_D5, REST, NOTE_FS5,
 			REST, NOTE_FS5, REST, NOTE_FS5, NOTE_E5, NOTE_E5, NOTE_FS5, NOTE_E5};
+int takeOnMeDelays[32] = {eightth, eightth, eightth, quarter, stop, quarter, stop, quarter,
+			stop, quarter, stop, eightth, eightth, eightth, eightth, eightth,
+			eightth, eightth, eightth, quarter, stop, quarter, stop, quarter,
+			stop, quarter, stop, eightth, eightth, eightth, eightth, eightth};
 
 // Function to initialize the PWM on PTD1
 void initPWM(void) {
@@ -95,6 +102,7 @@ void celebrate(void *argument) {
 			osThreadFlagsWait(END, osFlagsWaitAny, osWaitForever);
 			
 			playTone(celebrateNotes[i], celebrateDelays[i]);
+			playTone(REST, 3);
 		}
 	}
 	
@@ -172,7 +180,8 @@ void takeOnMe(void *argument) {
 		for (int i = 0; i < 32; i++) {
 			osThreadFlagsWait(IN_PROGRESS, osFlagsWaitAny, osWaitForever);
 			
-			playTone(takeOnMeNotes[i], TWO);
+			playTone(takeOnMeNotes[i], takeOnMeDelays[i]);
+			playTone(REST, 15);
 		}
 	}
 	
