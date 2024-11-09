@@ -100,13 +100,32 @@ void processGamepad(ControllerPtr ctl) {
   int16_t bumper = ctl->buttons();
 
   // Wave (Emergency brake)
-  if (ctl->x() || bumper == 0x0020 || bumper == 0x0030 || bumper == 0x0040) {
+  if (bumper == 0x0010 || bumper == 0x0020 || bumper == 0x0030) {
 
     ctl->playDualRumble(0 /* delayedStartMs */, 250 /* durationMs */, 0x80 /* weakMagnitude */, 
             0x40 /* strongMagnitude */);
     // Stop all movement (emergency brake)
 
     sendPacketToKL25Z(0xFF);
+
+  } else if (bumper) {
+
+    if (bumper == 0x0001) {
+      sendPacketToKL25Z(0x10); // Button B Pressed: Turn on Moving Song
+    } 
+
+    else if (bumper == 0x0002) {
+      sendPacketToKL25Z(0x20); // Button A Pressed: Turn on Ending Song
+    }
+
+    else if (bumper == 0x0008) {
+      sendPacketToKL25Z(0x30); // Button X Pressed: High Speed 
+    }
+
+    else if (bumper == 0x0004) {
+      sendPacketToKL25Z(0x40); // Button Y Pressed: Low Speed
+    }
+
 
   } else {
     /* Check the value of Right Stick first */
@@ -156,35 +175,15 @@ void processGamepad(ControllerPtr ctl) {
         sendPacketToKL25Z(0x00);
       } 
 
-      else if (x >= -150 && x <= 150 && y <= -450) {
+      else if (y <= -450) {
         // FORWARD
         sendPacketToKL25Z(0x01);
-      } 
+      }
       
-      else if (x <= -330 && y <= -330) {
-        // FL (Forward Left)
-        sendPacketToKL25Z(0x09);
-      } 
-      
-      else if (x >= 330 && y <= -330) {
-        // FR (Forward Right)
-        sendPacketToKL25Z(0x05);
-      } 
-      
-      else if (x >= -150 && x <= 150 && y >= 450) {
+      else if (y >= 450) {
         // BACKWARD
         sendPacketToKL25Z(0x02);
-      } 
-      
-      else if (x <= 330 && y >= 330) {
-        // BL (Backward Left)
-        sendPacketToKL25Z(0x0A);
-      } 
-      
-      else if (x >= 330 && y >= 330) {
-        // BR (Backward Right)
-        sendPacketToKL25Z(0x06);
-      } 
+      }
       
       else {
         // If none of the conditions are met, you can decide to either do nothing or handle it
@@ -280,5 +279,5 @@ void loop() {
   // https://stackoverflow.com/questions/66278271/task-watchdog-got-triggered-the-tasks-did-not-reset-the-watchdog-in-time
 
   vTaskDelay(1);
-  delay(150);
+  delay(100);
 }

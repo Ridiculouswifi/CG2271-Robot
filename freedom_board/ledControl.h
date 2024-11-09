@@ -57,6 +57,7 @@ void noLight(void) {
 }
 
 
+/*
 void onLED(void) {
 	GPIOE_PDOR |= MASK(EXTERNAL_LED);
 }
@@ -64,6 +65,7 @@ void onLED(void) {
 void offLED(void) {
 	GPIOE_PDOR &= ~MASK(EXTERNAL_LED);
 }
+*/
 
 
 void ledControl(enum colour_t colour) {
@@ -134,6 +136,8 @@ void initLEDTest() {
 	// Reset light
 	noLight();
 	
+	/* Code used for testing purposes
+	
 	// Enable Clock Gating for PORTE
 	SIM->SCGC5 |= SIM_SCGC5_PORTE_MASK;
 	
@@ -146,6 +150,7 @@ void initLEDTest() {
 	
 	// Turn off light
 	GPIOE->PDOR &= ~(1 << EXTERNAL_LED);
+	*/
 }
 
 #endif

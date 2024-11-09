@@ -5,10 +5,14 @@
 #include "queue.h"
 #include "robotSerial.h"
 #include "robotMotorControl.h"
+#include "robotAudio.h"
 
 #include "robotMacros.h"
 
 #include "ledControl.h"
+
+int speed = 80;
+int musicStatus = 0;
 
 /* Functions that decode data and execute actions */
 
@@ -18,6 +22,23 @@ uint8_t extractCommand(void) {
 		return 0xFF;
 	}
 	return Q_Dequeue(&rx_q);
+}
+
+/* Determines Music to Play */
+void playMusic(void *argument) {
+	for(;;) {
+		if (musicStatus == 1) {
+			osThreadFlagsSet(inProgress, IN_PROGRESS);
+			osThreadFlagsClear(END);
+		} else if (musicStatus == 2) {
+			osThreadFlagsSet(ending, END);
+			osThreadFlagsClear(IN_PROGRESS);
+		} else {
+			osThreadFlagsClear(IN_PROGRESS);
+			osThreadFlagsClear(END);
+			playTone(REST, 100);
+		}
+	}
 }
 
 /* Executes the action in the packet */
@@ -30,8 +51,7 @@ void handleCommand(int command) {
 		osThreadFlagsClear(STATIONARY);
 		
 		ledControl(GREEN);
-		offLED();
-		motorControl(STRAIGHT, 70); // Hard Coded for forward movement
+		motorControl(STRAIGHT, 100); // Hard Coded for forward movement
 		
 	} else if (command == 0x02) {
 		// Move Back
@@ -40,8 +60,7 @@ void handleCommand(int command) {
 		osThreadFlagsClear(STATIONARY);
 		
 		ledControl(WHITE);
-		offLED();
-		motorControl(REVERSE, 70);
+		motorControl(REVERSE, 100);
 		
 	} else if (command == 0x08) {
 		// Turn Left on the spot
@@ -50,7 +69,7 @@ void handleCommand(int command) {
 		osThreadFlagsClear(STATIONARY);
 		
 		ledControl(BLUE);
-		motorControl(TURN_ANTICLOCKWISE, 85);
+		motorControl(TURN_ANTICLOCKWISE, 80);
 		
 	} else if (command == 0x04) {
 		// Turn Right on the spot
@@ -59,7 +78,7 @@ void handleCommand(int command) {
 		osThreadFlagsClear(STATIONARY);
 		
 		ledControl(BLUE);
-		motorControl(TURN_CLOCKWISE, 85);
+		motorControl(TURN_CLOCKWISE, 80);
 		
 	} else if (command == 0x09) {
 		// Move Front and Turn Left
@@ -68,7 +87,7 @@ void handleCommand(int command) {
 		osThreadFlagsClear(STATIONARY);
 		
 		ledControl(SKY);
-		motorControl(FORWARD_LEFT_TURN, 60);
+		motorControl(FORWARD_LEFT_TURN, 100);
 		
 	} else if (command == 0x05) {
 		// Move Front and Turn Right
@@ -77,7 +96,7 @@ void handleCommand(int command) {
 		osThreadFlagsClear(STATIONARY);
 		
 		ledControl(SKY);
-		motorControl(FORWARD_RIGHT_TURN, 60);
+		motorControl(FORWARD_RIGHT_TURN, 100);
 		
 	} else if (command == 0x0a) {
 		// Move Back and Turn Left
@@ -86,7 +105,7 @@ void handleCommand(int command) {
 		osThreadFlagsClear(STATIONARY);
 		
 		ledControl(SKY);
-		motorControl(BACKWARDS_LEFT_TURN, 60);
+		motorControl(BACKWARDS_LEFT_TURN, 100);
 		
 	} else if (command == 0x06) {
 		// Move Back and Turn Right
@@ -95,7 +114,7 @@ void handleCommand(int command) {
 		osThreadFlagsClear(STATIONARY);
 		
 		ledControl(SKY);
-		motorControl(BACKWARDS_RIGHT_TURN, 60);
+		motorControl(BACKWARDS_RIGHT_TURN, 100);
 		
 	} else if (command == 0x00) {
 		// Stop
@@ -104,7 +123,6 @@ void handleCommand(int command) {
 		osThreadFlagsClear(MOVING);
 		
 		ledControl(RED);
-		onLED();
 		motorControl(STOP, 0);
 		
 	} else if (command == 0x0F) {
@@ -114,7 +132,6 @@ void handleCommand(int command) {
 		osThreadFlagsClear(MOVING);
 		
 		ledControl(PURPLE);
-		onLED();
 		motorControl(STOP, 0);
 	
 	} else if (command == 0xAA) {
@@ -124,9 +141,28 @@ void handleCommand(int command) {
 		osThreadFlagsClear(MOVING);
 		
 		ledControl(OFF);
-		onLED();
 		motorControl(STOP, 0);
 	
+	} else if (command == 0x10) {
+		// Play in progress song
+		musicStatus = 1;
+	
+	} else if (command == 0x20) {
+		// Play ending song
+		musicStatus = 2;
+	
+	} else if (command == 0x30) {
+		// High Speed
+		speed = 80;
+		
+		musicStatus = 0;
+	
+	} else if (command == 0x40) {
+		// Low Speed
+		speed = 50;
+		
+		musicStatus = 0;
+		
 	} else {
 		// Command is not recognised, discard command
 		osThreadFlagsSet(frontStop, STATIONARY);
@@ -134,7 +170,6 @@ void handleCommand(int command) {
 		osThreadFlagsClear(MOVING);
 		
 		ledControl(YELLOW);
-		onLED();
 		motorControl(STOP, 0);
 	}
 	

@@ -41,12 +41,15 @@ int main(void) {
 	osKernelInitialize();
 	
 	osThreadNew(interfaceCommand, NULL, NULL);
-	osThreadNew(celebrate, NULL, NULL);
+	osThreadNew(playMusic, NULL, NULL);
 	
 	frontRun = osThreadNew(runFrontLEDs, NULL, NULL);
 	frontStop = osThreadNew(stopFrontLEDs, NULL, NULL);
 	rearRun = osThreadNew(flashRearLEDsRun, NULL, NULL);
 	rearStop = osThreadNew(flashRearLEDsStop, NULL, NULL);
+	
+	inProgress = osThreadNew(takeOnMe, NULL, NULL);
+	ending = osThreadNew(celebrate, NULL, NULL);
 	
 	osKernelStart();
 	
